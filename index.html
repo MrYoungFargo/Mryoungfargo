@@ -60,8 +60,13 @@
       text-align: center;
     }
     .logo img {
-      max-height: 140px;
+      max-height: 180px;
       width: auto;
+      filter: drop-shadow(0 0 20px rgba(255,255,255,0.6)) drop-shadow(0 0 8px rgba(255,255,255,0.4));
+      transition: filter 0.3s ease;
+    }
+    .logo img:hover {
+      filter: drop-shadow(0 0 30px rgba(255,255,255,0.9)) drop-shadow(0 0 15px rgba(255,255,255,0.6));
     }
 
     .nav-links {
@@ -266,7 +271,7 @@
     @media (max-width: 768px) {
       .hero h2 { font-size: 1.5rem; }
       .header-inner { flex-direction: column; text-align: center; }
-      .logo img { max-height: 100px; }
+      .logo img { max-height: 130px; }
       .nav-links { justify-content: center; }
     }
 
@@ -327,7 +332,7 @@
 <div class="site-header">
   <div class="container header-inner">
     <div class="logo">
-      <img src="fargo1.png" alt="MrYoungFargo" onerror="this.src='https://placehold.co/600x600?text=MrYoungFargo'">
+      <img src="fargo1.png" alt="MrYoungFargo" onerror="this.src='https://placehold.co/400x180?text=MrYoungFargo'">
     </div>
     <div class="nav-links">
       <a href="#" class="nav-tshirts">T-SHIRTS</a>
@@ -396,7 +401,7 @@
     { id: 5, name: "Monalisa Sbabaring T-Shirt", price: 179.99, image: "t-shirt5.png", type: "T-Shirt", sizes: ["XS","S","M","L","XL","XXL"] }
   ];
 
-  // SWEATERS - Fixed sweater1 name to "Sbabaring Sweater"
+  // SWEATERS
   const sweaters = [
     { id: 6, name: "Sbabaring Sweater", price: 329.99, image: "sweater1.png", type: "Sweater", sizes: ["XS","S","M","L","XL","XXL"] },
     { id: 7, name: "Neon Duets Sweater", price: 329.99, image: "sweater2.png", type: "Sweater", sizes: ["XS","S","M","L","XL","XXL"] },
