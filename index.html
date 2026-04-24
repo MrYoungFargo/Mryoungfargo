@@ -3,22 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>MrYoungFargo Merch | Dark Purple→Blue BG</title>
+  <title>MrYoungFargo Merch | Curved Flow Background</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #2d1b4e, #0f172a);
       color: #e0e0e0;
       line-height: 1.2;
       min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
     }
+
+    /* CANVAS BACKGROUND – flowing curved lines (no straight lines) */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ALL CONTENT goes above the canvas */
+    .site-header, .hero, .container, footer, .cart-overlay, .modal {
+      position: relative;
+      z-index: 10;
+    }
+
     :root { --purple: #7f2aeb; --green: #10b981; --red: #e11d2c; --blue: #3b82f6; }
     .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
-    /* header gradient */
+    /* header gradient (kept as is) */
     .site-header {
       background: linear-gradient(135deg, #000000, #0a2a5a, #000000, #0a2a5a);
       background-size: 300% 300%;
@@ -128,14 +149,16 @@
       color: white;
     }
     .product-price { font-size: 0.65rem; font-weight: 800; color: var(--green); margin: 3px 0; }
+    
+    /* BUTTON STYLES – matching the "Experience flow" button from the example */
     .add-to-cart-btn {
-      background: #4a1d96;
-      border: none;
+      background: rgba(45, 85, 140, 0.55);
+      border: 1px solid rgba(100, 170, 250, 0.6);
       color: white;
       padding: 4px 0;
       width: 100%;
-      border-radius: 30px;
-      font-weight: 600;
+      border-radius: 44px;
+      font-weight: 500;
       font-size: 0.5rem;
       cursor: pointer;
       display: flex;
@@ -143,8 +166,15 @@
       justify-content: center;
       gap: 4px;
       white-space: nowrap;
+      transition: all 0.25s;
+      backdrop-filter: blur(4px);
     }
-    .add-to-cart-btn:hover { background: #5e2ca8; transform: scale(0.97); }
+    .add-to-cart-btn:hover {
+      background: rgba(65, 115, 185, 0.7);
+      border-color: rgba(120, 195, 255, 0.85);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(0, 40, 80, 0.3);
+    }
 
     footer { text-align: center; padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 20px; font-size: 0.5rem; color: rgba(255,255,255,0.6); }
 
@@ -159,8 +189,23 @@
     .cart-items { max-height: 55vh; overflow-y: auto; margin: 8px 0; font-size: 0.6rem; }
     .cart-total { font-size: 0.75rem; font-weight: bold; border-top: 1px solid #333; padding-top: 6px; }
     .checkout-btn {
-      background: var(--green); width: 100%; padding: 5px; border-radius: 40px; font-weight: bold;
-      margin-top: 8px; border: none; cursor: pointer; font-size: 0.6rem;
+      background: rgba(45, 85, 140, 0.55);
+      border: 1px solid rgba(100, 170, 250, 0.6);
+      width: 100%;
+      padding: 5px;
+      border-radius: 44px;
+      font-weight: 500;
+      margin-top: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.6rem;
+      color: white;
+      transition: all 0.25s;
+    }
+    .checkout-btn:hover {
+      background: rgba(65, 115, 185, 0.7);
+      border-color: rgba(120, 195, 255, 0.85);
+      transform: translateY(-1px);
     }
     .remove-item { background: var(--red); border: none; color: white; padding: 2px 5px; border-radius: 20px; font-size: 0.5rem; cursor: pointer; }
 
@@ -184,13 +229,29 @@
     .modal-color-btn { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
     .modal-color-btn.selected, .modal-color-btn:hover { border-color: #4a1d96; transform: scale(1.05); }
     .modal-confirm {
-      background: #4a1d96; color: white; border: none; padding: 5px 0; width: 100%;
-      border-radius: 40px; font-weight: 700; margin-top: 8px; cursor: pointer; font-size: 0.65rem;
+      background: rgba(45, 85, 140, 0.55);
+      border: 1px solid rgba(100, 170, 250, 0.6);
+      color: white;
+      padding: 5px 0;
+      width: 100%;
+      border-radius: 44px;
+      font-weight: 500;
+      margin-top: 8px;
+      cursor: pointer;
+      font-size: 0.65rem;
+      transition: all 0.25s;
+    }
+    .modal-confirm:hover {
+      background: rgba(65, 115, 185, 0.7);
+      border-color: rgba(120, 195, 255, 0.85);
     }
     .modal-close { background: none; border: none; color: #999; margin-top: 5px; cursor: pointer; font-size: 0.55rem; }
   </style>
 </head>
 <body>
+
+<!-- CANVAS BACKGROUND (flowing curved lines, no straight lines) -->
+<canvas id="bg-canvas"></canvas>
 
 <!-- Modal -->
 <div id="sizeColorModal" class="modal">
@@ -251,6 +312,193 @@
 </div>
 
 <script>
+  // CANVAS BACKGROUND ANIMATION (flowing curved lines, no straight lines)
+  (function() {
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let time = 0;
+    let mouseX = 0.5, mouseY = 0.5;
+    let mousePresent = false;
+    
+    class OrganicWave {
+      constructor(baseYratio, amplitude, freqX, freqTime, colorHue, lineWidth, phaseOffset) {
+        this.baseYratio = baseYratio;
+        this.amplitude = amplitude;
+        this.freqX = freqX;
+        this.freqTime = freqTime;
+        this.colorHue = colorHue;
+        this.lineWidth = lineWidth;
+        this.phaseOffset = phaseOffset || 0;
+      }
+      draw(ctx, w, h, t) {
+        ctx.beginPath();
+        const timePhase = t * this.freqTime + this.phaseOffset;
+        const baseY = this.baseYratio * h;
+        let first = true;
+        for (let x = 0; x <= w; x += 12) {
+          const yOffset = Math.sin(x * this.freqX + timePhase) * this.amplitude
+                       + Math.cos(x * this.freqX * 0.53 + timePhase * 0.7) * (this.amplitude * 0.4);
+          const y = baseY + yOffset;
+          if (first) { ctx.moveTo(x, y); first = false; }
+          else { ctx.lineTo(x, y); }
+        }
+        ctx.strokeStyle = `hsla(${this.colorHue}, 70%, 70%, 0.28)`;
+        ctx.lineWidth = this.lineWidth;
+        ctx.stroke();
+      }
+    }
+    
+    class DriftingBezier {
+      constructor(startRatioX, startRatioY, endRatioX, endRatioY, controlFactor, speed, colorHue, width) {
+        this.sx = startRatioX; this.sy = startRatioY; this.ex = endRatioX; this.ey = endRatioY;
+        this.ctrlFactor = controlFactor; this.speed = speed; this.colorHue = colorHue; this.width = width;
+        this.phase = Math.random() * Math.PI * 2;
+      }
+      draw(ctx, w, h, t) {
+        const startX = this.sx * w;
+        const startY = this.sy * h + Math.sin(t * this.speed * 0.6 + this.phase) * 12;
+        const endX = this.ex * w;
+        const endY = this.ey * h + Math.cos(t * this.speed * 0.5 + this.phase) * 10;
+        const ctrl1X = startX + (endX - startX) * 0.3 + Math.sin(t * this.speed + this.phase) * this.ctrlFactor;
+        const ctrl1Y = startY + (endY - startY) * 0.2 + Math.cos(t * this.speed * 0.8) * (this.ctrlFactor * 0.7);
+        const ctrl2X = startX + (endX - startX) * 0.7 + Math.cos(t * this.speed * 0.9 + 1.2) * this.ctrlFactor;
+        const ctrl2Y = startY + (endY - startY) * 0.6 + Math.sin(t * this.speed * 0.7) * (this.ctrlFactor * 0.8);
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.bezierCurveTo(ctrl1X, ctrl1Y, ctrl2X, ctrl2Y, endX, endY);
+        ctx.strokeStyle = `hsla(${this.colorHue}, 65%, 72%, 0.22)`;
+        ctx.lineWidth = this.width;
+        ctx.stroke();
+      }
+    }
+    
+    class RadialCurveRing {
+      constructor(centerXRatio, centerYRatio, radiusGrowth, speed, colorHue, maxRadiusFactor) {
+        this.cx = centerXRatio; this.cy = centerYRatio; this.growth = radiusGrowth;
+        this.speed = speed; this.colorHue = colorHue; this.maxFactor = maxRadiusFactor;
+        this.phaseShift = Math.random() * 100;
+      }
+      draw(ctx, w, h, t) {
+        const centerX = this.cx * w; const centerY = this.cy * h;
+        const animatedRadius = (t * this.growth + this.phaseShift) % (Math.min(w, h) * this.maxFactor);
+        const pulse = Math.sin(t * this.speed) * 8;
+        const radius = Math.max(15, animatedRadius + pulse);
+        if (radius > Math.min(w, h) * 0.9) return;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = `hsla(${this.colorHue}, 70%, 68%, 0.2)`;
+        ctx.lineWidth = 1.3;
+        ctx.stroke();
+        if (radius > 30) {
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius - 9, 0, Math.PI * 2);
+          ctx.strokeStyle = `hsla(${this.colorHue + 20}, 65%, 72%, 0.12)`;
+          ctx.stroke();
+        }
+      }
+    }
+    
+    const organicWaves = [];
+    const bezierFlows = [];
+    const radialRings = [];
+    
+    function initElements() {
+      organicWaves.length = 0;
+      bezierFlows.length = 0;
+      radialRings.length = 0;
+      organicWaves.push(new OrganicWave(0.2, 32, 0.0032, 0.0017, 205, 1.4, 0));
+      organicWaves.push(new OrganicWave(0.45, 45, 0.0025, 0.0012, 225, 1.6, 1.2));
+      organicWaves.push(new OrganicWave(0.65, 38, 0.0038, 0.0021, 190, 1.3, 2.5));
+      organicWaves.push(new OrganicWave(0.8, 28, 0.0045, 0.0014, 215, 1.2, 0.8));
+      organicWaves.push(new OrganicWave(0.33, 25, 0.0050, 0.0019, 235, 1.0, 3.0));
+      organicWaves.push(new OrganicWave(0.72, 35, 0.0030, 0.0011, 200, 1.1, 1.7));
+      bezierFlows.push(new DriftingBezier(0.1, 0.3, 0.85, 0.6, 45, 0.0022, 210, 1.3));
+      bezierFlows.push(new DriftingBezier(0.2, 0.7, 0.9, 0.35, 55, 0.0018, 195, 1.2));
+      bezierFlows.push(new DriftingBezier(0.05, 0.5, 0.7, 0.85, 38, 0.0026, 230, 1.4));
+      bezierFlows.push(new DriftingBezier(0.4, 0.15, 0.95, 0.55, 48, 0.0020, 220, 1.1));
+      bezierFlows.push(new DriftingBezier(0.6, 0.9, 0.15, 0.4, 42, 0.0024, 205, 1.2));
+      radialRings.push(new RadialCurveRing(0.25, 0.5, 0.9, 0.018, 210, 0.9));
+      radialRings.push(new RadialCurveRing(0.7, 0.4, 0.7, 0.022, 225, 0.85));
+      radialRings.push(new RadialCurveRing(0.5, 0.75, 1.1, 0.015, 195, 0.95));
+      radialRings.push(new RadialCurveRing(0.82, 0.6, 0.6, 0.025, 240, 0.8));
+      radialRings.push(new RadialCurveRing(0.35, 0.2, 0.8, 0.020, 215, 0.88));
+    }
+    
+    function drawBackground(ctx, w, h, t) {
+      const grad = ctx.createLinearGradient(0, 0, w * 0.4, h);
+      grad.addColorStop(0, '#0A111F');
+      grad.addColorStop(0.6, '#111A29');
+      grad.addColorStop(1, '#060C18');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+      for (let i = 0; i < 4; i++) {
+        const cx = w * (0.2 + Math.sin(t * 0.0003 + i) * 0.2);
+        const cy = h * (0.5 + Math.cos(t * 0.00025 + i * 1.2) * 0.2);
+        const rad = Math.min(w, h) * 0.4;
+        const radGrad = ctx.createRadialGradient(cx, cy, 10, cx, cy, rad);
+        radGrad.addColorStop(0, `rgba(65, 125, 195, 0.045)`);
+        radGrad.addColorStop(1, `rgba(20, 50, 90, 0)`);
+        ctx.fillStyle = radGrad;
+        ctx.fillRect(0, 0, w, h);
+      }
+      for (let wave of organicWaves) wave.draw(ctx, w, h, t);
+      for (let bez of bezierFlows) bez.draw(ctx, w, h, t);
+      for (let ring of radialRings) ring.draw(ctx, w, h, t);
+      ctx.lineWidth = 0.8;
+      for (let i = 0; i < 25; i++) {
+        const angle = t * 0.0008 + i;
+        const x1 = w * (0.3 + Math.sin(angle) * 0.2);
+        const y1 = h * (0.4 + Math.cos(angle * 1.3) * 0.2);
+        const x2 = w * (0.7 + Math.cos(angle) * 0.18);
+        const y2 = h * (0.6 + Math.sin(angle * 0.9) * 0.22);
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.quadraticCurveTo(w * 0.5 + Math.sin(t*0.002)*15, h * 0.5 + Math.cos(t*0.0018)*12, x2, y2);
+        ctx.strokeStyle = `hsla(${200 + i * 3}, 65%, 70%, 0.12)`;
+        ctx.stroke();
+      }
+      if (mousePresent) {
+        ctx.beginPath();
+        ctx.ellipse(mouseX * w, mouseY * h, 28, 22, t * 0.02, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(100, 180, 250, 0.25)`;
+        ctx.lineWidth = 1.1;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.ellipse(mouseX * w, mouseY * h, 44, 36, -t * 0.015, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(140, 200, 255, 0.2)`;
+        ctx.stroke();
+      }
+    }
+    
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      initElements();
+    }
+    
+    function animate() {
+      if (!ctx) return;
+      time = (time + 1) % 36000;
+      drawBackground(ctx, width, height, time);
+      requestAnimationFrame(animate);
+    }
+    
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX / width;
+      mouseY = e.clientY / height;
+      mousePresent = true;
+      setTimeout(() => { mousePresent = true; }, 20);
+    });
+    window.addEventListener('mouseleave', () => { mousePresent = false; });
+    resize();
+    animate();
+  })();
+
+  // STORE JAVASCRIPT (unchanged)
   const colors = [
     { name: "Red", value: "Red", bg: "#e11d2c" },
     { name: "Black", value: "Black", bg: "#1a1a1a" },
@@ -258,7 +506,6 @@
     { name: "Blue", value: "Blue", bg: "#3b82f6" }
   ];
 
-  // T-SHIRTS – removed "Sleeper T-Shirt" (only 5 items as in your screenshot)
   const tshirts = [
     { id: 1, name: "Neon Duets T-Shirt", price: 179.99, image: "t-shirt1.png", sizes: ["XS","S","M","L","XL","XXL"] },
     { id: 2, name: "Duets Lover T-Shirt", price: 179.99, image: "t-shirt2.png", sizes: ["XS","S","M","L","XL","XXL"] },
@@ -267,7 +514,6 @@
     { id: 5, name: "Monalisa Sabaring T-Shirt", price: 179.99, image: "t-shirt5.png", sizes: ["XS","S","M","L","XL","XXL"] }
   ];
 
-  // SWEATERS (4 items as in your screenshot)
   const sweaters = [
     { id: 6, name: "Sabaring Sweater", price: 329.99, image: "sweater1.png", sizes: ["XS","S","M","L","XL","XXL"] },
     { id: 7, name: "Neon Duets Sweater", price: 329.99, image: "sweater2.png", sizes: ["XS","S","M","L","XL","XXL"] },
@@ -275,7 +521,6 @@
     { id: 9, name: "Duets Glitch T-Shirt", price: 329.99, image: "sweater4.png", sizes: ["XS","S","M","L","XL","XXL"] }
   ];
 
-  // HOODIES (2 items)
   const hoodies = [
     { id: 10, name: "Duets Lover Hoodie", price: 379.99, image: "hoodie1.png", sizes: ["XS","S","M","L","XL","XXL"] },
     { id: 11, name: "Duets Glitch Hoodie", price: 379.99, image: "hoodie2.png", sizes: ["XS","S","M","L","XL","XXL"] }
