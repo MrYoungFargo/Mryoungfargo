@@ -27,13 +27,12 @@
       --green: #10b981;
       --blue: #3b82f6;
       --purple: #7f2aeb;
-      --card-bg-solid: #111111;
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 800px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 20px;
     }
 
     /* Full header with gradient background - NO BOX around logo */
@@ -41,7 +40,6 @@
       background: linear-gradient(135deg, #000000, #0a2a5a, #000000, #0a2a5a);
       background-size: 300% 300%;
       border-bottom: 1px solid rgba(127,42,235,0.3);
-      transition: all 0.3s ease;
       animation: headerGradient 4s ease infinite;
     }
     @keyframes headerGradient {
@@ -62,30 +60,21 @@
     .logo {
       flex: 1;
       text-align: center;
-      background: transparent;
-      padding: 0;
     }
     .logo img {
-      max-height: 200px;
+      max-height: 180px;
       width: auto;
       animation: spin3D 10s ease-in-out infinite;
       transform-style: preserve-3d;
       perspective: 1000px;
-      display: inline-block;
     }
     @keyframes spin3D {
-      0% {
-        transform: rotateY(0deg);
-      }
-      50% {
-        transform: rotateY(180deg);
-      }
-      100% {
-        transform: rotateY(360deg);
-      }
+      0% { transform: rotateY(0deg); }
+      50% { transform: rotateY(180deg); }
+      100% { transform: rotateY(360deg); }
     }
 
-    /* Sticky nav bar that appears on scroll */
+    /* Sticky nav bar */
     .sticky-nav {
       position: fixed;
       top: -100px;
@@ -94,13 +83,13 @@
       background: rgba(0,0,0,0.95);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(127,42,235,0.4);
-      padding: 12px 24px;
+      padding: 12px 20px;
       z-index: 1000;
       transition: top 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 48px;
+      gap: 40px;
     }
     .sticky-nav.show {
       top: 0;
@@ -110,16 +99,13 @@
       text-decoration: none;
       font-weight: 600;
       cursor: pointer;
-      font-size: 1rem;
-      transition: 0.2s;
+      font-size: 0.9rem;
     }
-    .sticky-nav a:hover {
-      color: var(--purple);
-    }
+    .sticky-nav a:hover { color: var(--purple); }
     .sticky-cart {
       position: relative;
       cursor: pointer;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       color: white;
       margin-left: auto;
     }
@@ -135,7 +121,7 @@
     }
     .sticky-nav-links {
       display: flex;
-      gap: 48px;
+      gap: 40px;
       align-items: center;
     }
 
@@ -169,12 +155,11 @@
     }
 
     .hero {
-      background: radial-gradient(circle at 20% 30%, rgba(127,42,235,0.2), rgba(0,0,0,0.8));
-      padding: 50px 0;
+      padding: 40px 0;
       text-align: center;
     }
     .hero h2 {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 700;
       background: linear-gradient(135deg, #fff, var(--purple));
       -webkit-background-clip: text;
@@ -183,14 +168,14 @@
     }
     .hero p {
       color: #aaa;
-      margin-top: 12px;
-      font-size: 0.9rem;
+      margin-top: 10px;
+      font-size: 0.85rem;
     }
 
     .category-title {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 600;
-      margin: 50px 0 25px 0;
+      margin: 40px 0 20px 0;
       border-left: 4px solid var(--purple);
       padding-left: 16px;
     }
@@ -199,122 +184,81 @@
       color: var(--purple);
     }
 
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+    /* LIST VIEW - like desktop mode */
+    .products-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
       margin-bottom: 40px;
     }
 
-    @media (min-width: 640px) {
-      .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 28px;
-      }
-    }
-
-    .product-card {
-      background: linear-gradient(135deg, #0a0a1a, #0a1a3a, #0a2a5a);
-      background-size: 200% 200%;
-      border-radius: 20px;
-      overflow: hidden;
+    .product-item {
+      background: linear-gradient(135deg, #0a0a1a, #0a1a3a);
+      border-radius: 16px;
       border: 1px solid rgba(127,42,235,0.3);
-      transition: transform 0.2s, box-shadow 0.2s;
+      padding: 16px 20px;
       cursor: pointer;
-      animation: cardGradient 4s ease infinite;
-    }
-    @keyframes cardGradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--purple);
-      box-shadow: 0 10px 25px -8px rgba(127,42,235,0.3);
-    }
-
-    .product-img {
-      background: rgba(0,0,0,0.3);
-      height: 200px;
+      transition: all 0.2s;
       display: flex;
       align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
     }
-    .product-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .product-item:hover {
+      border-color: var(--purple);
+      transform: translateX(5px);
     }
-    .product-img .no-img {
-      font-size: 2.5rem;
-      color: #555;
+    .product-info-left {
+      flex: 2;
+      min-width: 150px;
     }
-
-    .product-info {
-      padding: 14px;
-    }
-
     .product-title {
-      font-size: 0.85rem;
+      font-size: 1rem;
       font-weight: 700;
-      margin-bottom: 5px;
       color: white;
     }
-
     .product-price {
       font-size: 1.1rem;
       font-weight: 800;
       color: var(--green);
-      margin: 6px 0;
+      margin-top: 4px;
     }
-
-    .add-to-cart {
+    .add-to-cart-btn {
       background: var(--purple);
       border: none;
       color: white;
-      padding: 8px 0;
-      width: 100%;
+      padding: 10px 24px;
       border-radius: 40px;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       transition: 0.2s;
+      white-space: nowrap;
     }
-    .add-to-cart:hover {
+    .add-to-cart-btn:hover {
       background: #5e1ca8;
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
 
     footer {
       text-align: center;
       padding: 30px;
       border-top: 1px solid rgba(127,42,235,0.2);
-      margin-top: 50px;
-      font-size: 0.8rem;
+      margin-top: 40px;
+      font-size: 0.75rem;
     }
 
-    @media (max-width: 768px) {
-      .hero h2 { font-size: 1.5rem; }
-      .header-inner { flex-direction: column; text-align: center; }
-      .logo img { max-height: 120px; }
-      .nav-links { justify-content: center; display: none; }
-      .cart-icon { display: none; }
-      .sticky-nav { padding: 10px 16px; gap: 20px; }
-      .sticky-nav-links { gap: 20px; }
-      .sticky-nav a { font-size: 0.8rem; }
-    }
-
-    @media (min-width: 769px) {
-      .sticky-nav .sticky-nav-links {
-        gap: 48px;
+    @media (max-width: 500px) {
+      .product-item {
+        flex-direction: column;
+        text-align: center;
       }
+      .add-to-cart-btn {
+        width: 100%;
+      }
+      .logo img { max-height: 120px; }
+      .hero h2 { font-size: 1.4rem; }
     }
 
     .cart-overlay {
@@ -392,17 +336,10 @@
       padding: 24px 20px;
       text-align: center;
       animation: modalFadeIn 0.3s ease;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
     @keyframes modalFadeIn {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
     }
     .modal-content h3 {
       color: #1a1a2e;
@@ -438,14 +375,12 @@
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.2s;
       color: #1a1a2e;
       border: 1px solid #ddd;
     }
     .modal-size-btn:hover, .modal-size-btn.selected {
       background: #7f2aeb;
       color: white;
-      border-color: #7f2aeb;
     }
     .modal-colors {
       display: flex;
@@ -460,7 +395,6 @@
       border-radius: 50%;
       cursor: pointer;
       border: 3px solid transparent;
-      transition: 0.2s;
     }
     .modal-color-btn:hover, .modal-color-btn.selected {
       border-color: #7f2aeb;
@@ -477,10 +411,6 @@
       font-size: 1rem;
       cursor: pointer;
       margin-top: 15px;
-      transition: 0.2s;
-    }
-    .modal-confirm:hover {
-      background: #5e1ca8;
     }
     .modal-close {
       margin-top: 12px;
@@ -508,7 +438,7 @@
   </div>
 </div>
 
-<!-- Sticky Navigation Bar (appears on scroll) -->
+<!-- Sticky Navigation Bar -->
 <div class="sticky-nav" id="stickyNav">
   <div class="sticky-nav-links">
     <a href="#" class="sticky-tshirts">T-SHIRTS</a>
@@ -521,11 +451,11 @@
   </div>
 </div>
 
-<!-- Full Header with Logo - Whole header has black & blue gradient, no box around logo -->
+<!-- Full Header -->
 <div class="site-header" id="mainHeader">
   <div class="container header-inner">
     <div class="logo">
-      <img src="fargo1.png" alt="MrYoungFargo" onerror="this.src='https://placehold.co/400x200?text=MrYoungFargo'">
+      <img src="fargo1.png" alt="MrYoungFargo" onerror="this.src='https://placehold.co/400x180?text=MrYoungFargo'">
     </div>
     <div class="nav-links">
       <a href="#" class="nav-tshirts">T-SHIRTS</a>
@@ -549,17 +479,17 @@
 <div class="container">
   <div id="tshirts-section">
     <div class="category-title"><i class="fas fa-tshirt"></i> T-SHIRTS</div>
-    <div class="products-grid" id="tshirtsGrid"></div>
+    <div class="products-list" id="tshirtsList"></div>
   </div>
 
   <div id="sweaters-section">
     <div class="category-title"><i class="fas fa-vest"></i> SWEATERS</div>
-    <div class="products-grid" id="sweatersGrid"></div>
+    <div class="products-list" id="sweatersList"></div>
   </div>
 
   <div id="hoodies-section">
     <div class="category-title"><i class="fas fa-hoodie"></i> HOODIES</div>
-    <div class="products-grid" id="hoodiesGrid"></div>
+    <div class="products-list" id="hoodiesList"></div>
   </div>
 </div>
 
@@ -577,43 +507,39 @@
 </div>
 
 <script>
-  // Colors available for all products
   const availableColors = [
-    { name: "Red", class: "color-red", value: "Red", bg: "#e11d2c" },
-    { name: "Black", class: "color-black", value: "Black", bg: "#1a1a1a" },
-    { name: "Green", class: "color-green", value: "Green", bg: "#10b981" },
-    { name: "Blue", class: "color-blue", value: "Blue", bg: "#3b82f6" }
+    { name: "Red", value: "Red", bg: "#e11d2c" },
+    { name: "Black", value: "Black", bg: "#1a1a1a" },
+    { name: "Green", value: "Green", bg: "#10b981" },
+    { name: "Blue", value: "Blue", bg: "#3b82f6" }
   ];
 
-  // T-SHIRTS
   const tshirts = [
-    { id: 1, name: "Neon Duets T-Shirt", price: 179.99, image: "t-shirt1.png", type: "T-Shirt", sizes: ["XS","S","M","L","XL","XXL"] },
-    { id: 2, name: "Duets Lover T-Shirt", price: 179.99, image: "t-shirt2.png", type: "T-Shirt", sizes: ["XS","S","M","L","XL","XXL"] },
-    { id: 3, name: "Duets Glitch T-Shirt", price: 179.99, image: "t-shirt3.png", type: "T-Shirt", sizes: ["XS","S","M","L","XL","XXL"] },
-    { id: 4, name: "Sbabaring T-Shirt", price: 179.99, image: "t-shirt4.png", type: "T-Shirt", sizes: ["XS","S","M","L","XL","XXL"] },
-    { id: 5, name: "Monalisa Sbabaring T-Shirt", price: 179.99, image: "t-shirt5.png", type: "T-Shirt", sizes: ["XS","S","M","L","XL","XXL"] }
+    { id: 1, name: "Neon Duets T-Shirt", price: 179.99, image: "t-shirt1.png", sizes: ["XS","S","M","L","XL","XXL"] },
+    { id: 2, name: "Duets Lover T-Shirt", price: 179.99, image: "t-shirt2.png", sizes: ["XS","S","M","L","XL","XXL"] },
+    { id: 3, name: "Duets Glitch T-Shirt", price: 179.99, image: "t-shirt3.png", sizes: ["XS","S","M","L","XL","XXL"] },
+    { id: 4, name: "Sleeper T-Shirt", price: 179.99, image: "t-shirt4.png", sizes: ["XS","S","M","L","XL","XXL"] },
+    { id: 5, name: "Sabaring T-Shirt", price: 179.99, image: "t-shirt4.png", sizes: ["XS","S","M","L","XL","XXL"] },
+    { id: 6, name: "Monalisa Sabaring T-Shirt", price: 179.99, image: "t-shirt5.png", sizes: ["XS","S","M","L","XL","XXL"] }
   ];
 
-  // SWEATERS
   const sweaters = [
-    { id: 6, name: "Sbabaring Sweater", price: 329.99, image: "sweater1.png", type: "Sweater", sizes: ["XS","S","M","L","XL","XXL"] },
-    { id: 7, name: "Neon Duets Sweater", price: 329.99, image: "sweater2.png", type: "Sweater", sizes: ["XS","S","M","L","XL","XXL"] },
-    { id: 8, name: "Duets Lover Sweater", price: 329.99, image: "sweater3.png", type: "Sweater", sizes: ["XS","S","M","L","XL","XXL"] },
-    { id: 9, name: "Duets Glitch Sweater", price: 329.99, image: "sweater4.png", type: "Sweater", sizes: ["XS","S","M","L","XL","XXL"] }
+    { id: 7, name: "Sabaring Sweater", price: 329.99, image: "sweater1.png", sizes: ["XS","S","M","L","XL","XXL"] },
+    { id: 8, name: "Neon Duets Sweater", price: 329.99, image: "sweater2.png", sizes: ["XS","S","M","L","XL","XXL"] },
+    { id: 9, name: "Duets Lover Sweater", price: 329.99, image: "sweater3.png", sizes: ["XS","S","M","L","XL","XXL"] },
+    { id: 10, name: "Duets Glitch Sweater", price: 329.99, image: "sweater4.png", sizes: ["XS","S","M","L","XL","XXL"] }
   ];
 
-  // HOODIES
   const hoodies = [
-    { id: 10, name: "Duets Lover Hoodie", price: 379.99, image: "hoodie1.png", type: "Hoodie", sizes: ["XS","S","M","L","XL","XXL"] },
-    { id: 11, name: "Duets Glitch Hoodie", price: 379.99, image: "hoodie2.png", type: "Hoodie", sizes: ["XS","S","M","L","XL","XXL"] }
+    { id: 11, name: "Duets Lover Hoodie", price: 379.99, image: "hoodie1.png", sizes: ["XS","S","M","L","XL","XXL"] },
+    { id: 12, name: "Duets Glitch Hoodie", price: 379.99, image: "hoodie2.png", sizes: ["XS","S","M","L","XL","XXL"] }
   ];
 
   const allProducts = [...tshirts, ...sweaters, ...hoodies];
-
   let cart = [];
-  let currentSelectedProduct = null;
-  let currentSelectedSize = null;
-  let currentSelectedColor = null;
+  let currentProduct = null;
+  let currentSize = null;
+  let currentColor = null;
 
   function saveCart() {
     localStorage.setItem("mryoungfargo_cart", JSON.stringify(cart));
@@ -643,7 +569,7 @@
       total += itemTotal;
       html += `<div style="border-bottom:1px solid #333; padding:12px 0; display:flex; justify-content:space-between; align-items:center;">
         <div><strong>${item.name}</strong><br>Size: ${item.size}<br>Color: ${item.color}<br>R${item.price.toFixed(2)} x ${item.qty}</div>
-        <button class="remove-item" data-id="${item.id}" data-size="${item.size}" data-color="${item.color}" style="background:var(--red); border:none; color:white; padding:5px 10px; border-radius:20px;">Remove</button>
+        <button class="remove-item" data-id="${item.id}" data-size="${item.size}" data-color="${item.color}">Remove</button>
       </div>`;
     });
     container.innerHTML = html;
@@ -671,42 +597,40 @@
   }
 
   function showModal(product) {
-    currentSelectedProduct = product;
-    currentSelectedSize = null;
-    currentSelectedColor = null;
+    currentProduct = product;
+    currentSize = null;
+    currentColor = null;
     
     document.getElementById("modalProductName").innerText = product.name;
     document.getElementById("modalProductPrice").innerText = `R${product.price.toFixed(2)}`;
     
-    // Render sizes
     const sizesContainer = document.getElementById("modalSizes");
     sizesContainer.innerHTML = "";
     product.sizes.forEach(size => {
-      const sizeBtn = document.createElement("div");
-      sizeBtn.className = "modal-size-btn";
-      sizeBtn.innerText = size;
-      sizeBtn.addEventListener("click", () => {
-        document.querySelectorAll(".modal-size-btn").forEach(btn => btn.classList.remove("selected"));
-        sizeBtn.classList.add("selected");
-        currentSelectedSize = size;
-      });
-      sizesContainer.appendChild(sizeBtn);
+      const btn = document.createElement("div");
+      btn.className = "modal-size-btn";
+      btn.innerText = size;
+      btn.onclick = () => {
+        document.querySelectorAll(".modal-size-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        currentSize = size;
+      };
+      sizesContainer.appendChild(btn);
     });
     
-    // Render colors
     const colorsContainer = document.getElementById("modalColors");
     colorsContainer.innerHTML = "";
     availableColors.forEach(color => {
-      const colorBtn = document.createElement("div");
-      colorBtn.className = "modal-color-btn";
-      colorBtn.style.backgroundColor = color.bg;
-      colorBtn.title = color.name;
-      colorBtn.addEventListener("click", () => {
-        document.querySelectorAll(".modal-color-btn").forEach(btn => btn.classList.remove("selected"));
-        colorBtn.classList.add("selected");
-        currentSelectedColor = color.value;
-      });
-      colorsContainer.appendChild(colorBtn);
+      const btn = document.createElement("div");
+      btn.className = "modal-color-btn";
+      btn.style.backgroundColor = color.bg;
+      btn.title = color.name;
+      btn.onclick = () => {
+        document.querySelectorAll(".modal-color-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        currentColor = color.value;
+      };
+      colorsContainer.appendChild(btn);
     });
     
     document.getElementById("sizeColorModal").classList.add("show");
@@ -714,46 +638,33 @@
 
   function closeModal() {
     document.getElementById("sizeColorModal").classList.remove("show");
-    currentSelectedProduct = null;
-    currentSelectedSize = null;
-    currentSelectedColor = null;
   }
 
-  function confirmAddToCart() {
-    if (!currentSelectedSize) {
-      alert("Please select a size!");
-      return;
-    }
-    if (!currentSelectedColor) {
-      alert("Please select a color!");
-      return;
-    }
-    addToCart(currentSelectedProduct, currentSelectedSize, currentSelectedColor);
+  function confirmAdd() {
+    if (!currentSize) { alert("Please select a size!"); return; }
+    if (!currentColor) { alert("Please select a color!"); return; }
+    addToCart(currentProduct, currentSize, currentColor);
     closeModal();
   }
 
-  function renderProductGrid(productsArray, containerId) {
+  function renderList(productsArray, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = "";
     productsArray.forEach(prod => {
-      const card = document.createElement("div");
-      card.className = "product-card";
-      card.innerHTML = `
-        <div class="product-img">
-          <img src="${prod.image}" alt="${prod.name}" onerror="this.parentElement.innerHTML='<div class=\\'no-img\\'><i class=\\'fas fa-tshirt\\'></i></div>'">
-        </div>
-        <div class="product-info">
+      const item = document.createElement("div");
+      item.className = "product-item";
+      item.innerHTML = `
+        <div class="product-info-left">
           <div class="product-title">${prod.name}</div>
           <div class="product-price">R${prod.price.toFixed(2)}</div>
-          <button class="add-to-cart" data-id="${prod.id}"><i class="fas fa-cart-plus"></i> ADD TO CART</button>
         </div>
+        <button class="add-to-cart-btn" data-id="${prod.id}">ADD TO CART</button>
       `;
-      container.appendChild(card);
+      container.appendChild(item);
     });
     
-    // Add to cart listeners
-    container.querySelectorAll(".add-to-cart").forEach(btn => {
+    container.querySelectorAll(".add-to-cart-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = parseInt(btn.dataset.id);
@@ -762,11 +673,10 @@
       });
     });
     
-    // Click on card also shows modal
-    container.querySelectorAll(".product-card").forEach(card => {
-      card.addEventListener("click", (e) => {
-        if (e.target.classList.contains("add-to-cart")) return;
-        const btn = card.querySelector(".add-to-cart");
+    container.querySelectorAll(".product-item").forEach(item => {
+      item.addEventListener("click", (e) => {
+        if (e.target.classList.contains("add-to-cart-btn")) return;
+        const btn = item.querySelector(".add-to-cart-btn");
         if (btn) {
           const id = parseInt(btn.dataset.id);
           const product = allProducts.find(p => p.id === id);
@@ -776,31 +686,27 @@
     });
   }
 
-  // Sticky scroll effect
-  window.addEventListener("scroll", function() {
-    const stickyNav = document.getElementById("stickyNav");
-    if (window.scrollY > 150) {
-      stickyNav.classList.add("show");
-    } else {
-      stickyNav.classList.remove("show");
-    }
+  // Sticky scroll
+  window.addEventListener("scroll", () => {
+    const sticky = document.getElementById("stickyNav");
+    if (window.scrollY > 150) sticky.classList.add("show");
+    else sticky.classList.remove("show");
   });
 
-  // Navigation scroll for all buttons
-  function setupNavButtons() {
-    const btns = [
-      { class: ".nav-tshirts", section: "tshirts-section" },
-      { class: ".nav-sweaters", section: "sweaters-section" },
-      { class: ".nav-hoodies", section: "hoodies-section" },
-      { class: ".sticky-tshirts", section: "tshirts-section" },
-      { class: ".sticky-sweaters", section: "sweaters-section" },
-      { class: ".sticky-hoodies", section: "hoodies-section" }
+  function setupNav() {
+    const sections = [
+      { class: ".nav-tshirts", id: "tshirts-section" },
+      { class: ".nav-sweaters", id: "sweaters-section" },
+      { class: ".nav-hoodies", id: "hoodies-section" },
+      { class: ".sticky-tshirts", id: "tshirts-section" },
+      { class: ".sticky-sweaters", id: "sweaters-section" },
+      { class: ".sticky-hoodies", id: "hoodies-section" }
     ];
-    btns.forEach(btn => {
-      document.querySelectorAll(btn.class).forEach(el => {
+    sections.forEach(s => {
+      document.querySelectorAll(s.class).forEach(el => {
         el.addEventListener("click", (e) => {
           e.preventDefault();
-          document.getElementById(btn.section).scrollIntoView({ behavior: "smooth" });
+          document.getElementById(s.id).scrollIntoView({ behavior: "smooth" });
         });
       });
     });
@@ -813,21 +719,20 @@
     if (cart.length === 0) alert("Your cart is empty!");
     else {
       let total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
-      alert(`✅ Checkout Total: R${total.toFixed(2)}\n\nPayment options available. Contact us for bank transfer or PayFast.`);
+      alert(`✅ Checkout Total: R${total.toFixed(2)}\n\nPayment options available.`);
     }
   });
   
-  document.getElementById("modalConfirmBtn")?.addEventListener("click", confirmAddToCart);
+  document.getElementById("modalConfirmBtn")?.addEventListener("click", confirmAdd);
   document.getElementById("modalCloseBtn")?.addEventListener("click", closeModal);
   window.addEventListener("click", (e) => {
-    const modal = document.getElementById("sizeColorModal");
-    if (e.target === modal) closeModal();
+    if (e.target === document.getElementById("sizeColorModal")) closeModal();
   });
 
-  renderProductGrid(tshirts, "tshirtsGrid");
-  renderProductGrid(sweaters, "sweatersGrid");
-  renderProductGrid(hoodies, "hoodiesGrid");
-  setupNavButtons();
+  renderList(tshirts, "tshirtsList");
+  renderList(sweaters, "sweatersList");
+  renderList(hoodies, "hoodiesList");
+  setupNav();
   loadCart();
 </script>
 </body>
