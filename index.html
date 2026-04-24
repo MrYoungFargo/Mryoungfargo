@@ -18,7 +18,7 @@
       overflow-x: hidden;
     }
 
-    /* IMAGE BACKGROUND */
+    /* IMAGE BACKGROUND - background.png */
     body::before {
       content: "";
       position: fixed;
@@ -42,13 +42,13 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, rgba(26,10,46,0.7), rgba(10,26,58,0.7));
+      background: linear-gradient(135deg, rgba(26,10,46,0.6), rgba(10,26,58,0.6));
       z-index: 1;
       pointer-events: none;
     }
 
     /* ALL CONTENT goes above the background */
-    .site-header, .hero, .container, footer, .cart-overlay, .modal, .music-page {
+    .site-header, .hero, .container, footer, .cart-overlay, .modal {
       position: relative;
       z-index: 10;
     }
@@ -231,6 +231,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
+      text-decoration: none;
     }
     .listen-btn i { font-size: 1rem; }
     .listen-btn:hover {
@@ -238,119 +239,6 @@
       background: var(--purple);
       border-color: white;
       box-shadow: 0 10px 30px rgba(127,42,235,0.4);
-    }
-
-    /* MUSIC PAGE (separate page) */
-    .music-page {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.95);
-      z-index: 2000;
-      overflow-y: auto;
-      padding: 40px 20px;
-    }
-    .music-page.active {
-      display: block;
-    }
-    .music-container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .music-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-    .music-header h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      background: linear-gradient(135deg, #fff, #7f2aeb, #3b82f6);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .music-header p {
-      color: rgba(255,255,255,0.7);
-      font-size: 0.85rem;
-    }
-    .close-music {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-    .close-music:hover {
-      background: rgba(255,255,255,0.2);
-      transform: rotate(90deg);
-    }
-    .track-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .track-item {
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 20px;
-      border: 1px solid rgba(255,255,255,0.1);
-      transition: all 0.2s;
-    }
-    .track-item:hover {
-      border-color: var(--blue);
-      transform: translateX(5px);
-    }
-    .track-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-    .track-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-    .play-btn {
-      background: var(--blue);
-      border: none;
-      color: white;
-      padding: 8px 20px;
-      border-radius: 40px;
-      font-weight: 600;
-      font-size: 0.8rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
-    }
-    .play-btn:hover {
-      background: #2563eb;
-      transform: scale(1.02);
-    }
-    .play-btn.playing {
-      background: var(--green);
-    }
-    audio {
-      width: 100%;
-      margin-top: 10px;
     }
 
     /* cart sidebar */
@@ -451,21 +339,8 @@
     <div class="nav-links">
       <a href="#" class="nav-home">HOME</a>
       <a href="#" class="nav-store">STORE</a>
-      <a href="#" class="nav-music">MUSIC</a>
     </div>
     <div class="cart-icon" id="cartIcon"><i class="fas fa-bag-shopping"></i><span class="cart-count" id="cartCount">0</span></div>
-  </div>
-</div>
-
-<!-- MUSIC PAGE (separate) -->
-<div id="musicPage" class="music-page">
-  <button class="close-music" id="closeMusicBtn"><i class="fas fa-times"></i></button>
-  <div class="music-container">
-    <div class="music-header">
-      <h1>🎵 MR YOUNG FARGO</h1>
-      <p>Listen to my latest tracks</p>
-    </div>
-    <div class="track-list" id="trackList"></div>
   </div>
 </div>
 
@@ -478,11 +353,11 @@
   <div id="hoodies-section"><div class="category-title"><i class="fas fa-hoodie"></i> HOODIES</div><div class="products-grid" id="hoodiesGrid"></div></div>
 </div>
 
-<!-- MUSIC BUTTON AT BOTTOM -->
+<!-- MUSIC BUTTON AT BOTTOM - LINKS TO YOUTUBE -->
 <div class="music-footer-btn">
-  <button class="listen-btn" id="musicFooterBtn">
-    <i class="fas fa-headphones"></i> LISTEN TO MY MUSIC
-  </button>
+  <a href="https://m.youtube.com/@MrYoungFargoSA" target="_blank" class="listen-btn">
+    <i class="fab fa-youtube"></i> LISTEN TO MY MUSIC
+  </a>
 </div>
 
 <footer><p>© 2025 MrYoungFargo — All Rights Reserved</p></footer>
@@ -496,125 +371,6 @@
 </div>
 
 <script>
-  // ==============================================================
-  // MUSIC PLAYER
-  // ==============================================================
-  // ⚠️ REPLACE THESE URLs WITH YOUR ACTUAL AUDIO FILES ⚠️
-  const tracks = [
-    { id: 1, title: "Track One", artist: "Mr Young Fargo", url: "track1.mp3", duration: "3:45" },
-    { id: 2, title: "Track Two", artist: "Mr Young Fargo", url: "track2.mp3", duration: "4:12" },
-    { id: 3, title: "Track Three", artist: "Mr Young Fargo", url: "track3.mp3", duration: "3:28" },
-    { id: 4, title: "Track Four", artist: "Mr Young Fargo", url: "track4.mp3", duration: "5:01" },
-    { id: 5, title: "Track Five", artist: "Mr Young Fargo", url: "track5.mp3", duration: "3:55" }
-  ];
-
-  let currentAudio = null;
-  let currentPlayingId = null;
-
-  function renderMusicPlayer() {
-    const container = document.getElementById('trackList');
-    if (!container) return;
-    
-    container.innerHTML = '';
-    tracks.forEach(track => {
-      const trackDiv = document.createElement('div');
-      trackDiv.className = 'track-item';
-      trackDiv.innerHTML = `
-        <div class="track-info">
-          <div>
-            <div class="track-title">${track.title}</div>
-            <div style="font-size: 0.7rem; color: #aaa;">${track.artist} • ${track.duration}</div>
-          </div>
-          <button class="play-btn" data-id="${track.id}" data-url="${track.url}" data-title="${track.title}">
-            <i class="fas fa-play"></i> PLAY
-          </button>
-        </div>
-        <audio id="audio-${track.id}" src="${track.url}" preload="metadata"></audio>
-      `;
-      container.appendChild(trackDiv);
-    });
-
-    document.querySelectorAll('.play-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const trackId = parseInt(this.dataset.id);
-        const audio = document.getElementById(`audio-${trackId}`);
-        
-        if (currentAudio && currentAudio !== audio) {
-          currentAudio.pause();
-          currentAudio.currentTime = 0;
-          const prevBtn = document.querySelector(`.play-btn[data-id="${currentPlayingId}"]`);
-          if (prevBtn) {
-            prevBtn.innerHTML = '<i class="fas fa-play"></i> PLAY';
-            prevBtn.classList.remove('playing');
-          }
-        }
-        
-        if (currentAudio === audio && !audio.paused) {
-          audio.pause();
-          this.innerHTML = '<i class="fas fa-play"></i> PLAY';
-          this.classList.remove('playing');
-          currentAudio = null;
-          currentPlayingId = null;
-        } else {
-          audio.play();
-          this.innerHTML = '<i class="fas fa-pause"></i> PAUSE';
-          this.classList.add('playing');
-          currentAudio = audio;
-          currentPlayingId = trackId;
-          
-          audio.onended = () => {
-            this.innerHTML = '<i class="fas fa-play"></i> PLAY';
-            this.classList.remove('playing');
-            currentAudio = null;
-            currentPlayingId = null;
-          };
-        }
-      });
-    });
-  }
-
-  // ==============================================================
-  // MUSIC PAGE CONTROLS
-  // ==============================================================
-  const musicPage = document.getElementById('musicPage');
-  
-  function openMusicPage() {
-    musicPage.classList.add('active');
-    renderMusicPlayer();
-    document.body.style.overflow = 'hidden';
-  }
-  
-  function closeMusicPage() {
-    musicPage.classList.remove('active');
-    document.body.style.overflow = '';
-    if (currentAudio) {
-      currentAudio.pause();
-      currentAudio.currentTime = 0;
-      const btn = document.querySelector(`.play-btn[data-id="${currentPlayingId}"]`);
-      if (btn) {
-        btn.innerHTML = '<i class="fas fa-play"></i> PLAY';
-        btn.classList.remove('playing');
-      }
-      currentAudio = null;
-      currentPlayingId = null;
-    }
-  }
-  
-  document.getElementById('musicFooterBtn')?.addEventListener('click', openMusicPage);
-  document.getElementById('closeMusicBtn')?.addEventListener('click', closeMusicPage);
-  document.querySelector('.nav-music')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    openMusicPage();
-  });
-  document.querySelector('.nav-home')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-  document.querySelector('.nav-store')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
   // ==============================================================
   // STORE DATA & FUNCTIONS
   // ==============================================================
@@ -728,9 +484,22 @@
     const links = [
       { class: ".sticky-tshirts", id: "tshirts-section" },
       { class: ".sticky-sweaters", id: "sweaters-section" },
-      { class: ".sticky-hoodies", id: "hoodies-section" }
+      { class: ".sticky-hoodies", id: "hoodies-section" },
+      { class: ".nav-home", id: "top" },
+      { class: ".nav-store", id: "top" }
     ];
-    links.forEach(l => { document.querySelectorAll(l.class).forEach(el => { el.addEventListener("click", (e) => { e.preventDefault(); document.getElementById(l.id).scrollIntoView({ behavior: "smooth" }); }); }); });
+    links.forEach(l => { 
+      document.querySelectorAll(l.class).forEach(el => { 
+        el.addEventListener("click", (e) => { 
+          e.preventDefault(); 
+          if (l.id !== "top") {
+            document.getElementById(l.id).scrollIntoView({ behavior: "smooth" });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }); 
+      }); 
+    });
   }
   document.getElementById("cartIcon")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.add("open"));
   document.getElementById("stickyCartIcon")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.add("open"));
