@@ -18,7 +18,7 @@
       overflow-x: hidden;
     }
 
-    /* IMAGE BACKGROUND - background.png (NO DIM OVERLAY) */
+    /* IMAGE BACKGROUND - background.png (NO DIM OVERLAY, NO BLACK BACKGROUND) */
     body::before {
       content: "";
       position: fixed;
@@ -34,6 +34,8 @@
       pointer-events: none;
     }
 
+    /* NO EXTRA DARK OVERLAY — background stays clean */
+
     /* ALL CONTENT goes above the background */
     .site-header, .hero, .container, .mixtape-section, footer, .cart-overlay, .modal {
       position: relative;
@@ -43,7 +45,7 @@
     :root { --purple: #7f2aeb; --green: #10b981; --red: #e11d2c; --blue: #3b82f6; }
     .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
-    /* header gradient */
+    /* header gradient — thinner, smaller */
     .site-header {
       background: linear-gradient(135deg, #000000, #0a2a5a, #000000, #0a2a5a);
       background-size: 300% 300%;
@@ -60,12 +62,12 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      padding: 8px 0;
-      gap: 10px;
+      padding: 6px 0;
+      gap: 8px;
     }
     .logo { flex: 1; text-align: center; }
     .logo img {
-      max-height: 70px;
+      max-height: 55px;
       width: auto;
       animation: spin3D 10s ease-in-out infinite;
       transform-style: preserve-3d;
@@ -80,24 +82,24 @@
     /* CATEGORIES AT THE TOP */
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 24px;
     }
     .nav-links a {
       color: #ccc;
       text-decoration: none;
       font-weight: 600;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.65rem;
     }
     .nav-links a:hover { color: white; }
 
-    /* sticky nav */
+    /* sticky nav — more compact */
     .sticky-nav {
       position: fixed;
-      top: -50px;
+      top: -45px;
       left: 0;
       width: 100%;
-      background: rgba(0,0,0,0.95);
+      background: rgba(0,0,0,0.9);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(255,255,255,0.1);
       padding: 4px 20px;
@@ -106,87 +108,87 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 30px;
+      gap: 25px;
     }
     .sticky-nav.show { top: 0; }
-    .sticky-nav a { color: #ccc; text-decoration: none; font-weight: 500; font-size: 0.7rem; cursor: pointer; }
+    .sticky-nav a { color: #ccc; text-decoration: none; font-weight: 500; font-size: 0.6rem; cursor: pointer; }
     .sticky-nav a:hover { color: white; }
-    .sticky-cart { position: relative; cursor: pointer; font-size: 0.9rem; color: white; margin-left: auto; }
+    .sticky-cart { position: relative; cursor: pointer; font-size: 0.85rem; color: white; margin-left: auto; }
     .sticky-cart .cart-count-sticky {
       position: absolute; top: -5px; right: -8px;
-      background: var(--red); font-size: 0.45rem; padding: 1px 3px; border-radius: 20px;
+      background: var(--red); font-size: 0.4rem; padding: 1px 3px; border-radius: 20px;
     }
-    .sticky-nav-links { display: flex; gap: 30px; }
+    .sticky-nav-links { display: flex; gap: 25px; }
 
-    .cart-icon { position: relative; cursor: pointer; font-size: 0.9rem; }
+    .cart-icon { position: relative; cursor: pointer; font-size: 0.85rem; }
     .cart-count {
       position: absolute; top: -5px; right: -8px;
-      background: var(--red); font-size: 0.45rem; padding: 1px 3px; border-radius: 20px;
+      background: var(--red); font-size: 0.4rem; padding: 1px 3px; border-radius: 20px;
     }
-    .hero { padding: 15px 0 8px; text-align: center; }
-    .hero h2 { font-size: 0.85rem; font-weight: 700; color: white; text-shadow: 0 0 5px rgba(0,0,0,0.3); }
-    .hero p { color: rgba(255,255,255,0.7); font-size: 0.5rem; margin-top: 3px; }
+    .hero { padding: 12px 0 6px; text-align: center; }
+    .hero h2 { font-size: 0.7rem; font-weight: 700; color: white; text-shadow: 0 0 3px rgba(0,0,0,0.3); }
+    .hero p { color: rgba(255,255,255,0.7); font-size: 0.45rem; margin-top: 2px; }
     
-    /* MIXTAPE SECTION */
+    /* MIXTAPE SECTION — compact, no black background */
     .mixtape-section {
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(8px);
-      border-radius: 24px;
-      margin: 20px auto 30px;
-      padding: 20px;
-      max-width: 500px;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+      border-radius: 18px;
+      margin: 15px auto 25px;
+      padding: 12px;
+      max-width: 380px;
       text-align: center;
-      border: 1px solid rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.1);
     }
     .mixtape-cover {
       width: 100%;
-      max-width: 250px;
-      border-radius: 16px;
-      margin-bottom: 15px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      max-width: 140px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
     }
     .mixtape-title {
-      font-size: 1.2rem;
+      font-size: 0.85rem;
       font-weight: 800;
-      margin-bottom: 5px;
+      margin-bottom: 3px;
       background: linear-gradient(135deg, #fff, #7f2aeb);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
     .mixtape-price {
-      font-size: 0.9rem;
+      font-size: 0.7rem;
       color: var(--green);
       font-weight: 700;
-      margin-bottom: 15px;
+      margin-bottom: 8px;
     }
     .mixtape-buttons {
       display: flex;
-      gap: 15px;
+      gap: 10px;
       justify-content: center;
       flex-wrap: wrap;
     }
     .buy-btn, .listen-btn-mix {
-      padding: 8px 24px;
-      border-radius: 40px;
-      font-weight: 700;
-      font-size: 0.8rem;
+      padding: 5px 16px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.65rem;
       cursor: pointer;
       transition: all 0.2s;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       text-decoration: none;
       border: none;
     }
     .buy-btn {
       background: #ff0000;
       color: white;
-      box-shadow: 0 4px 12px rgba(255,0,0,0.3);
+      box-shadow: 0 2px 8px rgba(255,0,0,0.3);
     }
     .buy-btn:hover {
       background: #cc0000;
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
     .listen-btn-mix {
       background: var(--blue);
@@ -194,20 +196,29 @@
     }
     .listen-btn-mix:hover {
       background: #2563eb;
-      transform: translateY(-2px);
+      transform: translateY(-1px);
+    }
+    .download-message {
+      font-size: 0.55rem;
+      margin-top: 8px;
+      color: #ccc;
+      display: none;
+    }
+    .download-message.show {
+      display: block;
     }
 
-    .category-title { font-size: 0.7rem; font-weight: 700; margin: 20px 0 10px 0; border-left: 3px solid white; padding-left: 8px; color: white; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
-    .category-title i { margin-right: 5px; color: white; font-size: 0.65rem; }
+    .category-title { font-size: 0.65rem; font-weight: 700; margin: 16px 0 8px 0; border-left: 2px solid white; padding-left: 8px; color: white; text-shadow: 0 0 2px rgba(0,0,0,0.4); }
+    .category-title i { margin-right: 4px; color: white; font-size: 0.6rem; }
 
-    /* 3‑column grid - NO BOXES */
+    /* 3‑column grid */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-bottom: 30px;
+      gap: 20px;
+      margin-bottom: 25px;
     }
-    @media (max-width: 700px) { .products-grid { gap: 16px; } }
+    @media (max-width: 700px) { .products-grid { gap: 12px; } }
 
     .product-card {
       background: transparent;
@@ -217,59 +228,59 @@
       transition: transform 0.2s ease;
       cursor: pointer;
     }
-    .product-card:hover { transform: translateY(-4px); }
+    .product-card:hover { transform: translateY(-3px); }
 
     .product-img { 
       background: transparent; 
-      height: 160px; 
+      height: 130px; 
       display: flex; 
       align-items: center; 
       justify-content: center; 
       overflow: hidden;
-      border-radius: 16px;
+      border-radius: 12px;
     }
     .product-img img { 
       width: 100%; 
       height: 100%; 
       object-fit: cover;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      border-radius: 12px;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.25);
     }
-    .no-img { font-size: 1rem; color: #888; }
+    .no-img { font-size: 0.9rem; color: #888; }
 
-    .product-info { padding: 10px 8px 8px; }
+    .product-info { padding: 8px 6px 6px; }
     .product-title {
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       font-weight: 700;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       color: white;
-      text-shadow: 0 0 3px rgba(0,0,0,0.5);
+      text-shadow: 0 0 2px rgba(0,0,0,0.4);
     }
     .product-price { 
-      font-size: 0.7rem; 
+      font-size: 0.65rem; 
       font-weight: 800; 
       color: var(--green); 
-      margin: 3px 0; 
-      text-shadow: 0 0 2px rgba(0,0,0,0.3);
+      margin: 2px 0; 
+      text-shadow: 0 0 1px rgba(0,0,0,0.3);
     }
     
     .add-to-cart-btn {
       background: var(--blue);
       border: none;
       color: white;
-      padding: 5px 0;
+      padding: 4px 0;
       width: 100%;
-      border-radius: 30px;
+      border-radius: 25px;
       font-weight: 600;
-      font-size: 0.5rem;
+      font-size: 0.45rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 3px;
       white-space: nowrap;
       transition: all 0.2s;
     }
@@ -277,37 +288,36 @@
       background: #2563eb;
       transform: scale(0.98);
     }
-    .add-to-cart-btn i { font-size: 0.45rem; }
+    .add-to-cart-btn i { font-size: 0.4rem; }
 
-    footer { text-align: center; padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 20px; font-size: 0.5rem; color: rgba(255,255,255,0.6); }
+    footer { text-align: center; padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 15px; font-size: 0.45rem; color: rgba(255,255,255,0.6); }
 
     /* MUSIC BUTTON AT BOTTOM */
     .music-footer-btn {
       text-align: center;
-      margin: 30px 0 20px;
+      margin: 20px 0 15px;
     }
     .listen-btn {
       background: #ff0000;
       backdrop-filter: blur(0px);
       border: none;
-      padding: 12px 32px;
-      font-size: 0.85rem;
+      padding: 8px 24px;
+      font-size: 0.7rem;
       font-weight: 700;
-      border-radius: 50px;
+      border-radius: 40px;
       color: white;
       cursor: pointer;
       transition: all 0.3s;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       text-decoration: none;
-      box-shadow: 0 4px 15px rgba(255,0,0,0.3);
+      box-shadow: 0 2px 10px rgba(255,0,0,0.3);
     }
-    .listen-btn i { font-size: 1rem; }
+    .listen-btn i { font-size: 0.8rem; }
     .listen-btn:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
       background: #cc0000;
-      box-shadow: 0 8px 25px rgba(255,0,0,0.4);
     }
 
     /* cart sidebar */
@@ -317,9 +327,9 @@
       border-left: 2px solid var(--blue); overflow-y: auto;
     }
     .cart-overlay.open { right: 0; }
-    .close-cart { float: right; font-size: 1rem; cursor: pointer; background: none; border: none; color: white; }
-    .cart-items { max-height: 55vh; overflow-y: auto; margin: 8px 0; font-size: 0.55rem; }
-    .cart-total { font-size: 0.7rem; font-weight: bold; border-top: 1px solid #333; padding-top: 6px; }
+    .close-cart { float: right; font-size: 0.9rem; cursor: pointer; background: none; border: none; color: white; }
+    .cart-items { max-height: 55vh; overflow-y: auto; margin: 8px 0; font-size: 0.5rem; }
+    .cart-total { font-size: 0.65rem; font-weight: bold; border-top: 1px solid #333; padding-top: 6px; }
     .checkout-btn {
       background: var(--blue);
       width: 100%;
@@ -329,12 +339,12 @@
       margin-top: 8px;
       border: none;
       cursor: pointer;
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       color: white;
       transition: all 0.2s;
     }
     .checkout-btn:hover { background: #2563eb; transform: scale(0.98); }
-    .remove-item { background: var(--red); border: none; color: white; padding: 2px 5px; border-radius: 20px; font-size: 0.45rem; cursor: pointer; }
+    .remove-item { background: var(--red); border: none; color: white; padding: 2px 5px; border-radius: 20px; font-size: 0.4rem; cursor: pointer; }
 
     /* modal */
     .modal {
@@ -343,17 +353,17 @@
     }
     .modal.show { display: flex; }
     .modal-content {
-      background: white; border-radius: 14px; width: 85%; max-width: 260px; padding: 12px; text-align: center;
+      background: white; border-radius: 14px; width: 85%; max-width: 240px; padding: 10px; text-align: center;
     }
-    .modal-content h3 { font-size: 0.75rem; color: #111; margin-bottom: 2px; }
-    .modal-price { font-size: 0.65rem; color: #10b981; font-weight: 800; margin-bottom: 6px; }
-    .modal-section-title { font-size: 0.45rem; text-align: left; margin: 6px 0 3px; color: #555; }
+    .modal-content h3 { font-size: 0.7rem; color: #111; margin-bottom: 2px; }
+    .modal-price { font-size: 0.6rem; color: #10b981; font-weight: 800; margin-bottom: 5px; }
+    .modal-section-title { font-size: 0.45rem; text-align: left; margin: 5px 0 3px; color: #555; }
     .modal-sizes, .modal-colors { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
     .modal-size-btn {
-      background: #f0f0f0; padding: 3px 7px; border-radius: 30px; font-size: 0.55rem; font-weight: 600; cursor: pointer;
+      background: #f0f0f0; padding: 3px 7px; border-radius: 30px; font-size: 0.5rem; font-weight: 600; cursor: pointer;
     }
     .modal-size-btn.selected, .modal-size-btn:hover { background: var(--blue); color: white; }
-    .modal-color-btn { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+    .modal-color-btn { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
     .modal-color-btn.selected, .modal-color-btn:hover { border-color: var(--blue); transform: scale(1.05); }
     .modal-confirm {
       background: var(--blue);
@@ -362,14 +372,14 @@
       width: 100%;
       border-radius: 30px;
       font-weight: 600;
-      margin-top: 8px;
+      margin-top: 6px;
       cursor: pointer;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       border: none;
       transition: all 0.2s;
     }
     .modal-confirm:hover { background: #2563eb; transform: scale(0.98); }
-    .modal-close { background: none; border: none; color: #999; margin-top: 5px; cursor: pointer; font-size: 0.5rem; }
+    .modal-close { background: none; border: none; color: #999; margin-top: 4px; cursor: pointer; font-size: 0.45rem; }
   </style>
 </head>
 <body>
@@ -404,7 +414,7 @@
 <!-- Main Header -->
 <div class="site-header">
   <div class="container header-inner">
-    <div class="logo"><img src="fargo1.png" alt="MrYoungFargo" onerror="this.src='https://placehold.co/250x70?text=MrYoungFargo'"></div>
+    <div class="logo"><img src="fargo1.png" alt="MrYoungFargo" onerror="this.src='https://placehold.co/200x55?text=MrYoungFargo'"></div>
     <div class="nav-links">
       <a href="#" class="nav-tshirts">T-SHIRTS</a>
       <a href="#" class="nav-sweaters">SWEATERS</a>
@@ -417,20 +427,19 @@
 <!-- HERO SECTION -->
 <section class="hero"><div class="container"><h2>MRYOUNGFARGO MERCH</h2><p>Premium quality • Streetwear essentials</p></div></section>
 
-<!-- MIXTAPE SECTION (image + buy/listen) -->
+<!-- MIXTAPE SECTION -->
 <div class="container">
   <div class="mixtape-section">
-    <!-- REPLACE "mixtape-cover.jpg" WITH YOUR ACTUAL MIXTAPE COVER IMAGE FILE NAME -->
-    <img src="mixtape-cover.jpg" alt="New Mixtape" class="mixtape-cover" onerror="this.src='https://placehold.co/250x250?text=Mixtape+Cover'">
+    <img src="duetscover.png" alt="New Mixtape" class="mixtape-cover" onerror="this.src='https://placehold.co/140x140?text=Mixtape'">
     <div class="mixtape-title">THE DROP · NEW MIXTAPE</div>
     <div class="mixtape-price">Digital Album (ZIP) — R50</div>
     <div class="mixtape-buttons">
-      <!-- BUY BUTTON (triggers download/file request) -->
       <button class="buy-btn" id="buyMixtapeBtn"><i class="fas fa-shopping-cart"></i> BUY (R50)</button>
-      <!-- LISTEN BUTTON (opens YouTube playlist or audio) -->
-      <a href="https://www.youtube.com/playlist?list=PLYOUR_MIXTAPE_PLAYLIST_ID" target="_blank" class="listen-btn-mix"><i class="fab fa-youtube"></i> LISTEN NOW</a>
+      <a href="https://www.youtube.com/playlist?list=PLYOUR_MIXTAPE_ID" target="_blank" class="listen-btn-mix"><i class="fab fa-youtube"></i> LISTEN NOW</a>
     </div>
-    <p style="font-size: 0.6rem; margin-top: 12px; opacity: 0.7;">📥 ZIP file delivered after purchase</p>
+    <div id="downloadMessage" class="download-message">
+      ✅ Purchase confirmed! <a href="duets.zip" id="downloadLink" style="color: #10b981; text-decoration: underline;">Click here to download duets.zip</a>
+    </div>
   </div>
 </div>
 
@@ -460,7 +469,7 @@
 
 <script>
   // ==============================================================
-  // STORE DATA & FUNCTIONS
+  // STORE DATA & FUNCTIONS (unchanged but fonts smaller)
   // ==============================================================
   const colors = [
     { name: "Red", value: "Red", bg: "#e11d2c" },
@@ -469,7 +478,7 @@
     { name: "Blue", value: "Blue", bg: "#3b82f6" }
   ];
 
-  // T-SHIRTS (including new Faka shirts)
+  // T-SHIRTS (including Faka shirts)
   const tshirts = [
     { id: 1, name: "Neon Duets T-Shirt", price: 179.99, image: "t-shirt1.png", sizes: ["XS","S","M","L","XL","XXL"] },
     { id: 2, name: "Duets Lover T-Shirt", price: 179.99, image: "t-shirt2.png", sizes: ["XS","S","M","L","XL","XXL"] },
@@ -513,7 +522,7 @@
     cart.forEach(item => {
       const itemTotal = item.price * item.qty;
       total += itemTotal;
-      html += `<div style="border-bottom:1px solid #333; padding:6px 0; display:flex; justify-content:space-between;"><div><strong>${item.name}</strong><br>${item.size} / ${item.color}<br>R${item.price.toFixed(2)} x ${item.qty}</div><button class="remove-item" data-id="${item.id}" data-size="${item.size}" data-color="${item.color}">Remove</button></div>`;
+      html += `<div style="border-bottom:1px solid #333; padding:5px 0; display:flex; justify-content:space-between;"><div><strong>${item.name}</strong><br>${item.size} / ${item.color}<br>R${item.price.toFixed(2)} x ${item.qty}</div><button class="remove-item" data-id="${item.id}" data-size="${item.size}" data-color="${item.color}">Remove</button></div>`;
     });
     container.innerHTML = html;
     document.getElementById("cartTotalPrice").innerText = `R${total.toFixed(2)}`;
@@ -574,7 +583,7 @@
     });
   }
 
-  window.addEventListener("scroll", () => { const sticky = document.getElementById("stickyNav"); if (window.scrollY > 70) sticky.classList.add("show"); else sticky.classList.remove("show"); });
+  window.addEventListener("scroll", () => { const sticky = document.getElementById("stickyNav"); if (window.scrollY > 60) sticky.classList.add("show"); else sticky.classList.remove("show"); });
   function setupNav() {
     const links = [
       { class: ".nav-tshirts", id: "tshirts-section" },
@@ -594,15 +603,29 @@
     });
   }
 
-  // MIXTAPE BUY FUNCTIONALITY (demo: redirects to checkout / payment)
-  function setupMixtapePurchase() {
+  // MIXTAPE PURCHASE + DOWNLOAD (shows ZIP after payment confirmation)
+  function setupMixtape() {
     const buyBtn = document.getElementById('buyMixtapeBtn');
+    const downloadMsg = document.getElementById('downloadMessage');
     if (buyBtn) {
       buyBtn.addEventListener('click', () => {
-        // Add mixtape as a virtual product to cart? Or directly open checkout.
-        // For simplicity, we show payment instructions and simulate adding a digital item.
-        alert("🎵 MIXTAPE PURCHASE\n\nTo buy the ZIP file (R50), please send proof of payment to our WhatsApp/email.\n\nWe will email you the download link within 24 hours.\n\nContact: mryoungfargo@example.com\nWhatsApp: +27 XX XXX XXXX");
-        // In a real store, you would integrate PayFast / PayPal here.
+        // In a real store, you'd integrate PayFast / PayPal here.
+        // After successful payment, we show the download link.
+        const userConfirmed = confirm("💿 MIXTAPE PURCHASE\n\nTo buy the ZIP file for R50, you will be redirected to a secure payment page.\n\nAfter successful payment, the download link will appear.\n\n(This is a demo. In production, integrate PayFast, PayPal, or Yoco.)");
+        if (userConfirmed) {
+          // Simulate payment success – in reality, this would be a callback from your payment gateway.
+          // For now, we assume payment is approved.
+          alert("✅ Payment successful! Your download link is now available.");
+          downloadMsg.classList.add('show');
+          // Optional: trigger download automatically
+          const downloadLink = document.getElementById('downloadLink');
+          if (downloadLink) {
+            // Force download attribute hint
+            downloadLink.setAttribute('download', 'duets.zip');
+          }
+        } else {
+          alert("Purchase cancelled.");
+        }
       });
     }
   }
@@ -619,7 +642,7 @@
   renderGrid(sweaters, "sweatersGrid");
   renderGrid(hoodies, "hoodiesGrid");
   setupNav();
-  setupMixtapePurchase();
+  setupMixtape();
   loadCart();
 </script>
 </body>
