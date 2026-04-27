@@ -129,11 +129,11 @@
     .hero h2 { font-size: 0.7rem; font-weight: 700; color: white; text-shadow: 0 0 3px rgba(0,0,0,0.3); }
     .hero p { color: rgba(255,255,255,0.7); font-size: 0.45rem; margin-top: 2px; }
     
-    /* MIXTAPE SECTION — compact, no black background */
+    /* MIXTAPE SECTION — compact, no black background, SHARP CORNERS */
     .mixtape-section {
       background: rgba(0,0,0,0.25);
       backdrop-filter: blur(6px);
-      border-radius: 18px;
+      border-radius: 0px;   /* SHARP CORNERS */
       margin: 15px auto 25px;
       padding: 12px;
       max-width: 380px;
@@ -143,7 +143,7 @@
     .mixtape-cover {
       width: 100%;
       max-width: 140px;
-      border-radius: 12px;
+      border-radius: 0px;   /* SHARP CORNERS for image too */
       margin-bottom: 8px;
       box-shadow: 0 6px 14px rgba(0,0,0,0.25);
     }
@@ -427,7 +427,7 @@
 <!-- HERO SECTION -->
 <section class="hero"><div class="container"><h2>MRYOUNGFARGO MERCH</h2><p>Premium quality • Streetwear essentials</p></div></section>
 
-<!-- MIXTAPE SECTION -->
+<!-- MIXTAPE SECTION – SHARP CORNERS -->
 <div class="container">
   <div class="mixtape-section">
     <img src="duetscover.png" alt="New Mixtape" class="mixtape-cover" onerror="this.src='https://placehold.co/140x140?text=Mixtape'">
@@ -603,24 +603,18 @@
     });
   }
 
-  // MIXTAPE PURCHASE + DOWNLOAD (shows ZIP after payment confirmation)
+  // MIXTAPE PURCHASE + DOWNLOAD (sharp corners, functionality unchanged)
   function setupMixtape() {
     const buyBtn = document.getElementById('buyMixtapeBtn');
     const downloadMsg = document.getElementById('downloadMessage');
     if (buyBtn) {
       buyBtn.addEventListener('click', () => {
-        // In a real store, you'd integrate PayFast / PayPal here.
-        // After successful payment, we show the download link.
         const userConfirmed = confirm("💿 MIXTAPE PURCHASE\n\nTo buy the ZIP file for R50, you will be redirected to a secure payment page.\n\nAfter successful payment, the download link will appear.\n\n(This is a demo. In production, integrate PayFast, PayPal, or Yoco.)");
         if (userConfirmed) {
-          // Simulate payment success – in reality, this would be a callback from your payment gateway.
-          // For now, we assume payment is approved.
           alert("✅ Payment successful! Your download link is now available.");
           downloadMsg.classList.add('show');
-          // Optional: trigger download automatically
           const downloadLink = document.getElementById('downloadLink');
           if (downloadLink) {
-            // Force download attribute hint
             downloadLink.setAttribute('download', 'duets.zip');
           }
         } else {
