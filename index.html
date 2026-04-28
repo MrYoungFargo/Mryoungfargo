@@ -9,18 +9,21 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
+    html, body {
+      min-height: 100vh;
+      background: #0a0a1a;  /* fallback solid color */
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       color: #e0e0e0;
       line-height: 1.2;
-      min-height: 100vh;
       position: relative;
       overflow-x: hidden;
     }
 
-    /* FIXED BACKGROUND - covers entire page, no white gaps */
-    body::before {
-      content: "";
+    /* TRULY FIXED BACKGROUND – never moves */
+    #fixed-bg {
       position: fixed;
       top: 0;
       left: 0;
@@ -30,14 +33,8 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      background-attachment: fixed;
       z-index: 0;
       pointer-events: none;
-    }
-
-    /* Fallback gradient - in case image fails to load */
-    body {
-      background: linear-gradient(135deg, #1a0a2e, #0a1a3a);
     }
 
     /* ALL CONTENT goes above the background */
@@ -135,14 +132,14 @@
     
     /* MIXTAPE SECTION — sharp corners */
     .mixtape-section {
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
       border-radius: 0px;
       margin: 15px auto 25px;
       padding: 12px;
       max-width: 380px;
       text-align: center;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
     }
     .mixtape-cover {
       width: 100%;
@@ -225,14 +222,18 @@
     @media (max-width: 700px) { .products-grid { gap: 12px; } }
 
     .product-card {
-      background: transparent;
-      border-radius: 0;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(4px);
+      border-radius: 12px;
       overflow: hidden;
-      border: none;
-      transition: transform 0.2s ease;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform 0.2s ease, border-color 0.2s;
       cursor: pointer;
     }
-    .product-card:hover { transform: translateY(-3px); }
+    .product-card:hover { 
+      transform: translateY(-3px); 
+      border-color: rgba(255,255,255,0.25);
+    }
 
     .product-img { 
       background: transparent; 
@@ -241,58 +242,55 @@
       align-items: center; 
       justify-content: center; 
       overflow: hidden;
-      border-radius: 12px;
+      border-radius: 12px 12px 0 0;
     }
     .product-img img { 
       width: 100%; 
       height: 100%; 
       object-fit: cover;
-      border-radius: 12px;
-      box-shadow: 0 5px 12px rgba(0,0,0,0.25);
     }
     .no-img { font-size: 0.9rem; color: #888; }
 
-    .product-info { padding: 8px 6px 6px; }
+    .product-info { padding: 8px 6px 10px; }
     .product-title {
-      font-size: 0.55rem;
+      font-size: 0.6rem;
       font-weight: 700;
       margin-bottom: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       color: white;
-      text-shadow: 0 0 2px rgba(0,0,0,0.4);
     }
     .product-price { 
-      font-size: 0.65rem; 
+      font-size: 0.7rem; 
       font-weight: 800; 
       color: var(--green); 
-      margin: 2px 0; 
-      text-shadow: 0 0 1px rgba(0,0,0,0.3);
+      margin: 3px 0; 
     }
     
     .add-to-cart-btn {
       background: var(--blue);
       border: none;
       color: white;
-      padding: 4px 0;
+      padding: 5px 0;
       width: 100%;
       border-radius: 25px;
       font-weight: 600;
-      font-size: 0.45rem;
+      font-size: 0.5rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: 4px;
       white-space: nowrap;
       transition: all 0.2s;
+      margin-top: 4px;
     }
     .add-to-cart-btn:hover {
       background: #2563eb;
       transform: scale(0.98);
     }
-    .add-to-cart-btn i { font-size: 0.4rem; }
+    .add-to-cart-btn i { font-size: 0.45rem; }
 
     footer { text-align: center; padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 15px; font-size: 0.45rem; color: rgba(255,255,255,0.6); }
 
@@ -387,6 +385,9 @@
   </style>
 </head>
 <body>
+
+<!-- TRULY FIXED BACKGROUND ELEMENT – never moves on scroll -->
+<div id="fixed-bg"></div>
 
 <!-- Modal -->
 <div id="sizeColorModal" class="modal">
@@ -607,23 +608,12 @@
     });
   }
 
-  // MIXTAPE PURCHASE + DOWNLOAD
+  // MIXTAPE PURCHASE - shows "Payment coming soon" message
   function setupMixtape() {
     const buyBtn = document.getElementById('buyMixtapeBtn');
-    const downloadMsg = document.getElementById('downloadMessage');
     if (buyBtn) {
       buyBtn.addEventListener('click', () => {
-        const userConfirmed = confirm("💿 MIXTAPE PURCHASE\n\nTo buy the ZIP file for R50, you will be redirected to a secure payment page.\n\nAfter successful payment, the download link will appear.\n\n(This is a demo. In production, integrate PayFast, PayPal, or Yoco.)");
-        if (userConfirmed) {
-          alert("✅ Payment successful! Your download link is now available.");
-          downloadMsg.classList.add('show');
-          const downloadLink = document.getElementById('downloadLink');
-          if (downloadLink) {
-            downloadLink.setAttribute('download', 'duets.zip');
-          }
-        } else {
-          alert("Purchase cancelled.");
-        }
+        alert("💳 PAYMENT COMING SOON\n\nMixtape purchase will be available shortly. Stay tuned!");
       });
     }
   }
