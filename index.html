@@ -11,7 +11,7 @@
     
     html, body {
       min-height: 100vh;
-      background: #0a0a1a;  /* fallback solid color */
+      background: #0a0a1a;
     }
 
     body {
@@ -46,7 +46,7 @@
     :root { --purple: #7f2aeb; --green: #10b981; --red: #e11d2c; --blue: #3b82f6; }
     .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
-    /* header gradient — thinner, smaller */
+    /* header gradient */
     .site-header {
       background: linear-gradient(135deg, #000000, #0a2a5a, #000000, #0a2a5a);
       background-size: 300% 300%;
@@ -94,7 +94,7 @@
     }
     .nav-links a:hover { color: white; }
 
-    /* sticky nav — more compact */
+    /* sticky nav */
     .sticky-nav {
       position: fixed;
       top: -45px;
@@ -130,11 +130,11 @@
     .hero h2 { font-size: 0.7rem; font-weight: 700; background: linear-gradient(135deg, #fff, #7f2aeb); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none; }
     .hero p { color: rgba(255,255,255,0.7); font-size: 0.45rem; margin-top: 2px; }
     
-    /* MIXTAPE SECTION — sharp corners */
+    /* MIXTAPE SECTION — rounded corners, sharp picture */
     .mixtape-section {
       background: rgba(0,0,0,0.5);
       backdrop-filter: blur(8px);
-      border-radius: 0px;
+      border-radius: 24px;
       margin: 15px auto 25px;
       padding: 12px;
       max-width: 380px;
@@ -212,7 +212,7 @@
     .category-title { font-size: 0.65rem; font-weight: 700; margin: 16px 0 8px 0; border-left: 2px solid white; padding-left: 8px; color: white; text-shadow: 0 0 2px rgba(0,0,0,0.4); }
     .category-title i { margin-right: 4px; color: white; font-size: 0.6rem; }
 
-    /* 3‑column grid */
+    /* 3‑column grid - NO BACKGROUND ON ITEMS */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -221,18 +221,18 @@
     }
     @media (max-width: 700px) { .products-grid { gap: 12px; } }
 
+    /* product card - NO BACKGROUND, completely transparent */
     .product-card {
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(4px);
-      border-radius: 12px;
+      background: transparent;
+      backdrop-filter: none;
+      border-radius: 0;
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.08);
-      transition: transform 0.2s ease, border-color 0.2s;
+      border: none;
+      transition: transform 0.2s ease;
       cursor: pointer;
     }
     .product-card:hover { 
       transform: translateY(-3px); 
-      border-color: rgba(255,255,255,0.25);
     }
 
     .product-img { 
@@ -242,16 +242,18 @@
       align-items: center; 
       justify-content: center; 
       overflow: hidden;
-      border-radius: 12px 12px 0 0;
+      border-radius: 12px;
     }
     .product-img img { 
       width: 100%; 
       height: 100%; 
       object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.25);
     }
     .no-img { font-size: 0.9rem; color: #888; }
 
-    .product-info { padding: 8px 6px 10px; }
+    .product-info { padding: 8px 6px 6px; }
     .product-title {
       font-size: 0.6rem;
       font-weight: 700;
@@ -260,12 +262,14 @@
       overflow: hidden;
       text-overflow: ellipsis;
       color: white;
+      text-shadow: 0 0 2px rgba(0,0,0,0.5);
     }
     .product-price { 
       font-size: 0.7rem; 
       font-weight: 800; 
       color: var(--green); 
       margin: 3px 0; 
+      text-shadow: 0 0 1px rgba(0,0,0,0.3);
     }
     
     .add-to-cart-btn {
@@ -386,7 +390,7 @@
 </head>
 <body>
 
-<!-- TRULY FIXED BACKGROUND ELEMENT – never moves on scroll -->
+<!-- TRULY FIXED BACKGROUND ELEMENT -->
 <div id="fixed-bg"></div>
 
 <!-- Modal -->
@@ -432,11 +436,11 @@
 <!-- HERO SECTION -->
 <section class="hero"><div class="container"><h2>MRYOUNGFARGO MERCH</h2><p>Premium quality • Streetwear essentials</p></div></section>
 
-<!-- MIXTAPE SECTION – SHARP CORNERS -->
+<!-- MIXTAPE SECTION – rounded background, sharp picture -->
 <div class="container">
   <div class="mixtape-section">
     <img src="duetscover.png" alt="New Mixtape" class="mixtape-cover" onerror="this.src='https://placehold.co/140x140?text=Mixtape'">
-    <div class="mixtape-title">THE DROP · NEW MIXTAPE</div>
+    <div class="mixtape-title">DUETS · NEW MIXTAPE</div>
     <div class="mixtape-price">Digital Album (ZIP) — R50</div>
     <div class="mixtape-buttons">
       <button class="buy-btn" id="buyMixtapeBtn"><i class="fas fa-shopping-cart"></i> BUY (R50)</button>
@@ -483,7 +487,7 @@
     { name: "Blue", value: "Blue", bg: "#3b82f6" }
   ];
 
-  // T-SHIRTS (including Faka shirts)
+  // T-SHIRTS
   const tshirts = [
     { id: 1, name: "Neon Duets T-Shirt", price: 179.99, image: "t-shirt1.png", sizes: ["XS","S","M","L","XL","XXL"] },
     { id: 2, name: "Duets Lover T-Shirt", price: 179.99, image: "t-shirt2.png", sizes: ["XS","S","M","L","XL","XXL"] },
@@ -494,7 +498,7 @@
     { id: 13, name: "Chinese Faka T-Shirt", price: 179.99, image: "t-shirt7.png", sizes: ["XS","S","M","L","XL","XXL"] }
   ];
 
-  // SWEATERS (including Faka Sweater)
+  // SWEATERS
   const sweaters = [
     { id: 6, name: "Sabaring Sweater", price: 329.99, image: "sweater1.png", sizes: ["XS","S","M","L","XL","XXL"] },
     { id: 7, name: "Neon Duets Sweater", price: 329.99, image: "sweater2.png", sizes: ["XS","S","M","L","XL","XXL"] },
@@ -503,7 +507,7 @@
     { id: 14, name: "Faka Sweater", price: 329.99, image: "sweater5.png", sizes: ["XS","S","M","L","XL","XXL"] }
   ];
 
-  // HOODIES (including Faka Hoodie)
+  // HOODIES
   const hoodies = [
     { id: 10, name: "Duets Lover Hoodie", price: 379.99, image: "hoodie1.png", sizes: ["XS","S","M","L","XL","XXL"] },
     { id: 11, name: "Duets Glitch Hoodie", price: 379.99, image: "hoodie2.png", sizes: ["XS","S","M","L","XL","XXL"] },
@@ -608,7 +612,7 @@
     });
   }
 
-  // MIXTAPE PURCHASE - shows "Payment coming soon" message
+  // MIXTAPE PURCHASE
   function setupMixtape() {
     const buyBtn = document.getElementById('buyMixtapeBtn');
     if (buyBtn) {
@@ -634,4 +638,4 @@
   loadCart();
 </script>
 </body>
-</html>
+</html> 
