@@ -3,27 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>MrYoungFargo Merch + Mixtape</title>
+  <title>MrYoungFargo Merch | Official Store</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
-    html, body {
-      min-height: 100vh;
-      background: #0a0a1a;
-    }
-
     body {
       font-family: 'Inter', sans-serif;
       color: #e0e0e0;
       line-height: 1.2;
+      min-height: 100vh;
       position: relative;
       overflow-x: hidden;
     }
 
-    /* TRULY FIXED BACKGROUND – never moves */
-    #fixed-bg {
+    /* FIXED BACKGROUND - covers entire page, no white gaps */
+    body::before {
+      content: "";
       position: fixed;
       top: 0;
       left: 0;
@@ -33,8 +30,14 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      background-attachment: fixed;
       z-index: 0;
       pointer-events: none;
+    }
+
+    /* Fallback gradient */
+    body {
+      background: linear-gradient(135deg, #1a0a2e, #0a1a3a);
     }
 
     /* ALL CONTENT goes above the background */
@@ -46,7 +49,7 @@
     :root { --purple: #7f2aeb; --green: #10b981; --red: #e11d2c; --blue: #3b82f6; }
     .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
-    /* header gradient */
+    /* header gradient — thinner, smaller */
     .site-header {
       background: linear-gradient(135deg, #000000, #0a2a5a, #000000, #0a2a5a);
       background-size: 300% 300%;
@@ -94,7 +97,7 @@
     }
     .nav-links a:hover { color: white; }
 
-    /* sticky nav */
+    /* sticky nav — more compact */
     .sticky-nav {
       position: fixed;
       top: -45px;
@@ -130,16 +133,16 @@
     .hero h2 { font-size: 0.7rem; font-weight: 700; background: linear-gradient(135deg, #fff, #7f2aeb); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none; }
     .hero p { color: rgba(255,255,255,0.7); font-size: 0.45rem; margin-top: 2px; }
     
-    /* MIXTAPE SECTION — rounded corners, sharp picture */
+    /* MIXTAPE SECTION — sharp corners */
     .mixtape-section {
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(8px);
-      border-radius: 24px;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      border-radius: 0px;
       margin: 15px auto 25px;
       padding: 12px;
       max-width: 380px;
       text-align: center;
-      border: 1px solid rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.1);
     }
     .mixtape-cover {
       width: 100%;
@@ -212,7 +215,7 @@
     .category-title { font-size: 0.65rem; font-weight: 700; margin: 16px 0 8px 0; border-left: 2px solid white; padding-left: 8px; color: white; text-shadow: 0 0 2px rgba(0,0,0,0.4); }
     .category-title i { margin-right: 4px; color: white; font-size: 0.6rem; }
 
-    /* 3‑column grid - NO BACKGROUND ON ITEMS */
+    /* 3‑column grid */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -221,19 +224,15 @@
     }
     @media (max-width: 700px) { .products-grid { gap: 12px; } }
 
-    /* product card - NO BACKGROUND, completely transparent */
     .product-card {
       background: transparent;
-      backdrop-filter: none;
       border-radius: 0;
       overflow: hidden;
       border: none;
       transition: transform 0.2s ease;
       cursor: pointer;
     }
-    .product-card:hover { 
-      transform: translateY(-3px); 
-    }
+    .product-card:hover { transform: translateY(-3px); }
 
     .product-img { 
       background: transparent; 
@@ -255,20 +254,20 @@
 
     .product-info { padding: 8px 6px 6px; }
     .product-title {
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       font-weight: 700;
       margin-bottom: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       color: white;
-      text-shadow: 0 0 2px rgba(0,0,0,0.5);
+      text-shadow: 0 0 2px rgba(0,0,0,0.4);
     }
     .product-price { 
-      font-size: 0.7rem; 
+      font-size: 0.65rem; 
       font-weight: 800; 
       color: var(--green); 
-      margin: 3px 0; 
+      margin: 2px 0; 
       text-shadow: 0 0 1px rgba(0,0,0,0.3);
     }
     
@@ -276,25 +275,24 @@
       background: var(--blue);
       border: none;
       color: white;
-      padding: 5px 0;
+      padding: 4px 0;
       width: 100%;
       border-radius: 25px;
       font-weight: 600;
-      font-size: 0.5rem;
+      font-size: 0.45rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 3px;
       white-space: nowrap;
       transition: all 0.2s;
-      margin-top: 4px;
     }
     .add-to-cart-btn:hover {
       background: #2563eb;
       transform: scale(0.98);
     }
-    .add-to-cart-btn i { font-size: 0.45rem; }
+    .add-to-cart-btn i { font-size: 0.4rem; }
 
     footer { text-align: center; padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 15px; font-size: 0.45rem; color: rgba(255,255,255,0.6); }
 
@@ -390,9 +388,6 @@
 </head>
 <body>
 
-<!-- TRULY FIXED BACKGROUND ELEMENT -->
-<div id="fixed-bg"></div>
-
 <!-- Modal -->
 <div id="sizeColorModal" class="modal">
   <div class="modal-content">
@@ -436,11 +431,11 @@
 <!-- HERO SECTION -->
 <section class="hero"><div class="container"><h2>MRYOUNGFARGO MERCH</h2><p>Premium quality • Streetwear essentials</p></div></section>
 
-<!-- MIXTAPE SECTION – rounded background, sharp picture -->
+<!-- MIXTAPE SECTION -->
 <div class="container">
   <div class="mixtape-section">
     <img src="duetscover.png" alt="New Mixtape" class="mixtape-cover" onerror="this.src='https://placehold.co/140x140?text=Mixtape'">
-    <div class="mixtape-title">DUETS · NEW MIXTAPE</div>
+    <div class="mixtape-title">THE DROP · NEW MIXTAPE</div>
     <div class="mixtape-price">Digital Album (ZIP) — R50</div>
     <div class="mixtape-buttons">
       <button class="buy-btn" id="buyMixtapeBtn"><i class="fas fa-shopping-cart"></i> BUY (R50)</button>
@@ -615,17 +610,81 @@
   // MIXTAPE PURCHASE
   function setupMixtape() {
     const buyBtn = document.getElementById('buyMixtapeBtn');
+    const downloadMsg = document.getElementById('downloadMessage');
     if (buyBtn) {
       buyBtn.addEventListener('click', () => {
-        alert("💳 PAYMENT COMING SOON\n\nMixtape purchase will be available shortly. Stay tuned!");
+        const userConfirmed = confirm("💿 MIXTAPE PURCHASE\n\nPay R50 via iKhokha\n\nClick OK to proceed to secure payment.");
+        if (userConfirmed) {
+          // Create payment for R50
+          fetch('https://mryoungfargo-payment.onrender.com/create-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount: 50,
+              orderId: "MIXTAPE_" + Date.now(),
+              customerEmail: "buyer@example.com"
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && data.paymentUrl) {
+              window.location.href = data.paymentUrl;
+            } else {
+              alert("Payment error: " + (data.error || "Unknown error"));
+            }
+          })
+          .catch(err => {
+            alert("Connection error. Please try again.");
+          });
+        }
       });
     }
   }
 
+  // UPDATED CHECKOUT BUTTON WITH iKHOKHA PAYMENT
+  document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
+    if (cart.length === 0) {
+        alert("Cart is empty");
+        return;
+    }
+    
+    let total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+    
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    const originalText = checkoutBtn.innerText;
+    checkoutBtn.innerText = "⏳ PROCESSING...";
+    checkoutBtn.disabled = true;
+    
+    try {
+        const response = await fetch('https://mryoungfargo-payment.onrender.com/create-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                amount: total,
+                orderId: "ORDER_" + Date.now(),
+                customerEmail: "customer@example.com"
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.paymentUrl) {
+            window.location.href = data.paymentUrl;
+        } else {
+            alert("Payment error: " + (data.error || "Unknown error"));
+            checkoutBtn.innerText = originalText;
+            checkoutBtn.disabled = false;
+        }
+    } catch (error) {
+        alert("Connection error. Please try again.");
+        checkoutBtn.innerText = originalText;
+        checkoutBtn.disabled = false;
+    }
+  });
+
   document.getElementById("cartIcon")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.add("open"));
   document.getElementById("stickyCartIcon")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.add("open"));
   document.getElementById("closeCartBtn")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.remove("open"));
-  document.getElementById("checkoutBtn")?.addEventListener("click", () => { if (cart.length === 0) alert("Cart empty"); else { let total = cart.reduce((s,i) => s + (i.price * i.qty), 0); alert(`✅ Total: R${total.toFixed(2)}\nPayment coming soon.`); } });
   document.getElementById("modalConfirmBtn")?.addEventListener("click", confirmAdd);
   document.getElementById("modalCloseBtn")?.addEventListener("click", closeModal);
   window.addEventListener("click", (e) => { if (e.target === document.getElementById("sizeColorModal")) closeModal(); });
@@ -638,4 +697,4 @@
   loadCart();
 </script>
 </body>
-</html> 
+</html>
