@@ -56,7 +56,7 @@ app.post('/create-payment', async (req, res) => {
         amount: amountInCents,
         currency: "ZAR",
         requesterUrl: "https://mryoungfargo.github.io/Duets-merch-store/",
-        mode: "TEST",
+        mode: "live",
         externalTransactionID: orderId || "ORDER_" + Date.now(),
         urls: {
             callbackUrl: "https://mryoungfargo-payment.onrender.com/webhook",
