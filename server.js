@@ -1,103 +1,121 @@
-require('dotenv').config();  // Add this at the very topconst express = require('express');
 const express = require('express');
 const cors = require('cors');
 const crypto = require('crypto');
 const app = express();
 
-// Allow all origins for testing
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type']
-}));
+app.use(cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS'] }));
 app.use(express.json());
 
-// Your iKhokha credentials – set these in Render dashboard
 const IKHOKHA_APP_ID = process.env.IKHOKHA_APP_ID;
 const IKHOKHA_SECRET = process.env.IKHOKHA_SECRET;
 
-// Generate signature for iKhokha
-function generateSignature(payload, secret) {
-    const stringToSign = JSON.stringify(payload) + secret;
-    return crypto.createHash('sha256').update(stringToSign).digest('hex');
+// THE CORRECT ENDPOINT
+const API_ENDPOINT = 'https://api.ikhokha.com/public-api/v1/api/payment';
+
+// Helper: Escape string for signature (matching iKhokha's jsStringEscape)
+function jsStringEscape(str) {
+    return str.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 }
 
-// ROOT ROUTE
+// Helper: Create payload to sign = path + requestBody
+function createPayloadToSign(urlPath, body) {
+    const basePath = new URL(urlPath).pathname;
+    const payload = basePath + body;
+    return jsStringEscape(payload);
+}
+
+// Helper: Generate signature using HMAC SHA256
+function generateSignature(payloadToSign, secret) {
+    return crypto.createHmac('sha256', secret).update(payloadToSign).digest('hex');
+}
+
+// Root endpoint
 app.get('/', (req, res) => {
-    res.json({
-        status: '✅ Payment API is running!',
-        message: 'MrYoungFargo store backend is active',
-        endpoints: {
-            health: 'GET /health',
-            createPayment: 'POST /create-payment',
-            webhook: 'POST /webhook'
-        }
+    res.json({ 
+        status: '✅ iKhokha Payment API is running!',
+        endpoints: { health: 'GET /health', createPayment: 'POST /create-payment' }
     });
 });
 
-// HEALTH CHECK ENDPOINT – THIS FIXES THE 404!
+// Health check
 app.get('/health', (req, res) => {
-    res.json({ 
-        status: 'OK', 
-        timestamp: new Date().toISOString(),
-        service: 'MrYoungFargo Payment Backend'
-    });
+    res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
 // Create payment endpoint
 app.post('/create-payment', async (req, res) => {
     console.log("📦 Received request:", req.body);
     
-    const { amount, orderId, customerEmail } = req.body;
+    const { amount, orderId } = req.body;
     
     if (!amount || amount <= 0) {
         return res.json({ success: false, error: "Invalid amount" });
     }
     
+    // Check if API keys are loaded
+    if (!IKHOKHA_APP_ID || !IKHOKHA_SECRET) {
+        return res.json({ success: false, error: "API keys not configured on server" });
+    }
+    
+    // Amount in cents (iKhokha requires smallest currency unit)
     const amountInCents = Math.round(amount * 100);
     
-    const payload = {
+    // Build request payload according to iKhokha docs
+    const requestPayload = {
+        entityID: IKHOKHA_APP_ID,
         amount: amountInCents,
         currency: "ZAR",
-        mode: "TEST",
-        transactionType: "SALE",
-        merchantOrderID: orderId || "ORDER_" + Date.now(),
-        customerEmail: customerEmail || "customer@example.com",
-        returnUrl: "https://mryoungfargo.github.io/Duets-merch-store/success.html",
-        cancelUrl: "https://mryoungfargo.github.io/Duets-merch-store/cancel.html",
-        notifyUrl: "https://mryoungfargo-payment.onrender.com/webhook"
+        requesterUrl: "https://mryoungfargo.github.io/Duets-merch-store/",
+        mode: "TEST",  // Change to "live" when ready
+        externalTransactionID: orderId || "ORDER_" + Date.now(),
+        urls: {
+            callbackUrl: "https://mryoungfargo-payment.onrender.com/webhook",
+            successPageUrl: "https://mryoungfargo.github.io/Duets-merch-store/success.html",
+            failurePageUrl: "https://mryoungfargo.github.io/Duets-merch-store/failed.html",
+            cancelUrl: "https://mryoungfargo.github.io/Duets-merch-store/cancel.html"
+        }
     };
     
-    const signature = generateSignature(payload, IKHOKHA_SECRET);
+    const requestBodyStr = JSON.stringify(requestPayload);
+    
+    // Create signature according to iKhokha docs: path + requestBody
+    const payloadToSign = createPayloadToSign(API_ENDPOINT, requestBodyStr);
+    const signature = generateSignature(payloadToSign, IKHOKHA_SECRET);
+    
+    console.log("🔑 App ID:", IKHOKHA_APP_ID);
+    console.log("💰 Amount in cents:", amountInCents);
+    console.log("📝 Payload to sign:", payloadToSign);
+    console.log("🔒 Signature:", signature);
     
     try {
-        const response = await fetch('https://sandbox.ikhokha.com/v1/payments', {
+        const response = await fetch(API_ENDPOINT, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Application-Id': IKHOKHA_APP_ID,
-                'X-Signature': signature
+                'IK-APPID': IKHOKHA_APP_ID,
+                'IK-SIGN': signature
             },
-            body: JSON.stringify(payload)
+            body: requestBodyStr
         });
         
         const data = await response.json();
-        console.log("iKhokha response:", data);
+        console.log("✅ iKhokha response:", data);
         
-        if (data.paymentUrl) {
-            res.json({ success: true, paymentUrl: data.paymentUrl });
+        if (data.paylinkUrl) {
+            res.json({ success: true, paymentUrl: data.paylinkUrl });
         } else {
-            res.json({ success: false, error: data.message || "Payment creation failed" });
+            res.json({ success: false, error: data.message || "Payment creation failed", details: data });
         }
     } catch (error) {
-        console.error("Error:", error.message);
+        console.error("❌ Error:", error.message);
         res.json({ success: false, error: error.message });
     }
 });
 
-// Webhook for payment confirmation
+// Webhook endpoint for payment confirmation
 app.post('/webhook', (req, res) => {
     console.log("💰 Webhook received:", req.body);
+    // Verify signature here in production
     res.status(200).send("OK");
 });
 
