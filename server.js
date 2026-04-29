@@ -1,4 +1,4 @@
-const express = require('express');
+require('dotenv').config();  // Add this at the very topconst express = require('express');
 const cors = require('cors');
 const crypto = require('crypto');
 const app = express();
