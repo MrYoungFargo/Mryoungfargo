@@ -3,28 +3,62 @@ const cors = require('cors');
 const crypto = require('crypto');
 const app = express();
 
-app.use(cors());
+// Allow all origins (for testing) - then restrict later
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
 
-// Your iKhokha credentials (set in Render environment variables)
+// Your iKhokha credentials – set these in Render dashboard
 const IKHOKHA_APP_ID = process.env.IK46NDKL1J3S4VJWO7XXCRD4F8P3KQAN;
 const IKHOKHA_SECRET = process.env.pe09mzC6QwkaQGMA72CVq9SeAvtsXoxK;
 
-// Generate signature for iKhokha API
+// Generate signature for iKhokha
 function generateSignature(payload, secret) {
     const stringToSign = JSON.stringify(payload) + secret;
     return crypto.createHash('sha256').update(stringToSign).digest('hex');
 }
 
+// ROOT ROUTE
+app.get('/', (req, res) => {
+    res.json({
+        status: '✅ Payment API is running!',
+        message: 'MrYoungFargo store backend is active',
+        endpoints: {
+            health: 'GET /health',
+            createPayment: 'POST /create-payment',
+            webhook: 'POST /webhook'
+        }
+    });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.json({ 
+        status: 'OK', 
+        timestamp: new Date().toISOString(),
+        service: 'MrYoungFargo Payment Backend'
+    });
+});
+
 // Create payment endpoint
 app.post('/create-payment', async (req, res) => {
+    console.log("📦 Received request:", req.body);
+    
     const { amount, orderId, customerEmail } = req.body;
+    
+    if (!amount || amount <= 0) {
+        return res.json({ success: false, error: "Invalid amount" });
+    }
+    
     const amountInCents = Math.round(amount * 100);
     
     const payload = {
         amount: amountInCents,
         currency: "ZAR",
-        mode: "TEST",  // Use "PRODUCTION" for live payments
+        mode: "TEST",
         transactionType: "SALE",
         merchantOrderID: orderId || "ORDER_" + Date.now(),
         customerEmail: customerEmail || "customer@example.com",
@@ -47,6 +81,7 @@ app.post('/create-payment', async (req, res) => {
         });
         
         const data = await response.json();
+        console.log("iKhokha response:", data);
         
         if (data.paymentUrl) {
             res.json({ success: true, paymentUrl: data.paymentUrl });
@@ -54,30 +89,18 @@ app.post('/create-payment', async (req, res) => {
             res.json({ success: false, error: data.message || "Payment creation failed" });
         }
     } catch (error) {
+        console.error("Error:", error.message);
         res.json({ success: false, error: error.message });
     }
 });
 
-// Webhook endpoint for payment confirmation
+// Webhook for payment confirmation
 app.post('/webhook', (req, res) => {
-    console.log("Webhook received:", req.body);
+    console.log("💰 Webhook received:", req.body);
     res.status(200).send("OK");
-});
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-    res.json({ status: 'OK', timestamp: new Date().toISOString() });
-});
-
-// Default route – fix for 404
-app.get('/', (req, res) => {
-    res.json({ 
-        message: 'MrYoungFargo Payment API is running',
-        endpoints: ['/create-payment', '/webhook', '/health']
-    });
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
 });
