@@ -82,6 +82,19 @@
     .nav-links { display: flex; gap: 20px; align-items: center; }
     .nav-links a { color: #ccc; text-decoration: none; font-weight: 600; cursor: pointer; font-size: 0.65rem; }
     .nav-links a:hover { color: white; }
+    .cart-icon { 
+      position: relative; 
+      cursor: pointer; 
+      font-size: 0.9rem; 
+      margin-left: 0;
+      margin-right: 5px;
+    }
+    .cart-count {
+      position: absolute; top: -5px; right: -8px;
+      background: var(--red); font-size: 0.4rem; padding: 1px 3px; border-radius: 20px;
+      min-width: 14px;
+      text-align: center;
+    }
     .auth-link {
       background: rgba(59,130,246,0.3);
       padding: 6px 10px;
@@ -121,11 +134,6 @@
     }
     .sticky-nav-links { display: flex; gap: 25px; }
 
-    .cart-icon { position: relative; cursor: pointer; font-size: 0.85rem; }
-    .cart-count {
-      position: absolute; top: -5px; right: -8px;
-      background: var(--red); font-size: 0.4rem; padding: 1px 3px; border-radius: 20px;
-    }
     .hero { padding: 12px 0 6px; text-align: center; }
     .hero h2 { font-size: 0.7rem; font-weight: 700; background: linear-gradient(135deg, #fff, #7f2aeb); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .hero p { color: rgba(255,255,255,0.7); font-size: 0.45rem; margin-top: 2px; }
@@ -426,12 +434,6 @@
     .auth-btn:hover {
       background: #2563eb;
     }
-    .auth-divider {
-      margin: 15px 0;
-      color: #888;
-      font-size: 0.7rem;
-      position: relative;
-    }
     .auth-toggle {
       margin-top: 15px;
       font-size: 0.7rem;
@@ -505,9 +507,9 @@
       <a href="#" class="nav-tshirts">T-SHIRTS</a>
       <a href="#" class="nav-sweaters">SWEATERS</a>
       <a href="#" class="nav-hoodies">HOODIES</a>
+      <div class="cart-icon" id="cartIcon"><i class="fas fa-bag-shopping"></i><span class="cart-count" id="cartCount">0</span></div>
       <a href="#" class="auth-link" id="showAuthBtn"><i class="fas fa-user"></i></a>
     </div>
-    <div class="cart-icon" id="cartIcon"><i class="fas fa-bag-shopping"></i><span class="cart-count" id="cartCount">0</span></div>
   </div>
 </div>
 
@@ -600,7 +602,7 @@
     updateCartUI();
   }
   
-  // AUTH MODAL FUNCTIONS - NO ALERTS
+  // AUTH MODAL FUNCTIONS
   const authModal = document.getElementById('authModal');
   let isLoginMode = true;
   
@@ -745,11 +747,8 @@
     });
   }
   
+  // ADD TO CART - no login required, just adds to cart
   function addToCart(product, size, color) {
-    if (!currentUser) {
-      showAuthModal();
-      return false;
-    }
     if (!size) { alert("Select size"); return false; }
     if (!color && product.id !== 99) { alert("Select color"); return false; }
     const existing = cart.find(i => i.id === product.id && i.size === size && i.color === color);
@@ -761,10 +760,6 @@
   }
   
   function showModal(product) {
-    if (!currentUser) {
-      showAuthModal();
-      return;
-    }
     currentProduct = product; selectedSize = null; selectedColor = null;
     document.getElementById("modalProductName").innerText = product.name;
     document.getElementById("modalProductPrice").innerText = `R${product.price.toFixed(2)}`;
@@ -826,15 +821,11 @@
     });
   }
   
-  // MIXTAPE - adds to cart
+  // MIXTAPE - adds to cart (no login required)
   function setupMixtape() {
     const buyBtn = document.getElementById('buyMixtapeBtn');
     if (buyBtn) {
       buyBtn.addEventListener('click', () => {
-        if (!currentUser) {
-          showAuthModal();
-          return;
-        }
         const existing = cart.find(i => i.id === 99);
         if (existing) {
           existing.qty++;
@@ -847,7 +838,7 @@
     }
   }
   
-  // CHECKOUT BUTTON - shows login modal if not logged in (no alert)
+  // CHECKOUT BUTTON - ONLY HERE we require login (when ready to pay)
   document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
     if (!currentUser) {
       showAuthModal();
@@ -889,8 +880,8 @@
   });
   
   // EVENT LISTENERS
-  document.getElementById("cartIcon")?.addEventListener("click", () => { if (currentUser) document.getElementById("cartSidebar").classList.add("open"); else showAuthModal(); });
-  document.getElementById("stickyCartIcon")?.addEventListener("click", () => { if (currentUser) document.getElementById("cartSidebar").classList.add("open"); else showAuthModal(); });
+  document.getElementById("cartIcon")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.add("open"));
+  document.getElementById("stickyCartIcon")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.add("open"));
   document.getElementById("closeCartBtn")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.remove("open"));
   document.getElementById("modalConfirmBtn")?.addEventListener("click", confirmAdd);
   document.getElementById("modalCloseBtn")?.addEventListener("click", closeModal);
@@ -924,4 +915,4 @@
   setupMixtape();
 </script>
 </body>
-</html> 
+</html>
