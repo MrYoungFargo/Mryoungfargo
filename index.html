@@ -23,6 +23,7 @@
   
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
       font-family: 'Inter', sans-serif;
       color: #e0e0e0;
@@ -31,6 +32,7 @@
       position: relative;
       overflow-x: hidden;
     }
+
     body::before {
       content: "";
       position: fixed;
@@ -46,9 +48,15 @@
       z-index: 0;
       pointer-events: none;
     }
-    .site-header, .hero, .container, .mixtape-section, footer, .cart-overlay, .modal, .auth-modal, .reset-modal { position: relative; z-index: 10; }
+
+    .site-header, .hero, .container, .mixtape-section, footer, .cart-overlay, .modal, .auth-modal, .reset-modal {
+      position: relative;
+      z-index: 10;
+    }
+
     :root { --purple: #7f2aeb; --green: #10b981; --red: #e11d2c; --blue: #3b82f6; }
     .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+
     .site-header {
       background: linear-gradient(135deg, #000000, #0a2a5a, #000000, #0a2a5a);
       background-size: 300% 300%;
@@ -81,6 +89,7 @@
       50% { transform: rotateY(180deg); }
       100% { transform: rotateY(360deg); }
     }
+
     .nav-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
     .nav-links a { color: #ccc; text-decoration: none; font-weight: 600; cursor: pointer; font-size: 0.65rem; }
     .nav-links a:hover { color: white; }
@@ -91,6 +100,7 @@
       min-width: 14px;
       text-align: center;
     }
+    
     /* User section - person icon only */
     .user-section {
       background: rgba(59,130,246,0.3);
@@ -133,7 +143,7 @@
       background: #1a1a2e;
       border-radius: 12px;
       padding: 8px 0;
-      min-width: 120px;
+      min-width: 100px;
       display: none;
       z-index: 100;
       border: 1px solid rgba(255,255,255,0.1);
@@ -144,6 +154,7 @@
       font-size: 0.7rem;
       cursor: pointer;
       color: #ddd;
+      text-align: center;
     }
     .user-dropdown div:hover { background: rgba(59,130,246,0.3); }
     .user-dropdown .logout-item { color: #ff8888; }
@@ -785,7 +796,7 @@
     if (window.BrevoConversations) {
       window.BrevoConversations('identify', { email: '', name: '' });
     }
-    alert('Logged out successfully');
+    // NO POPUP ALERT - removed as requested
   }
   
   // FORGOT PASSWORD FUNCTIONS
