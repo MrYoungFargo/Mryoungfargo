@@ -52,14 +52,14 @@ app.post('/create-payment', async (req, res) => {
         entityID: IKHOKHA_APP_ID,
         amount: amountInCents,
         currency: "ZAR",
-        requesterUrl: "https://mryoungfargo.github.io/MrYoungFargo/",
+        requesterUrl: "https://mryoungfargo.github.io/Mryoungfargo/",
         mode: "TEST",
         externalTransactionID: orderId || "ORDER_" + Date.now(),
         urls: {
             callbackUrl: "https://mryoungfargo-payment.onrender.com/webhook",
-            successPageUrl: "https://mryoungfargo.github.io/MrYoungFargo/success.html",
-            failurePageUrl: "https://mryoungfargo.github.io/MrYoungFargo/failed.html",
-            cancelUrl: "https://mryoungfargo.github.io/MrYoungFargo/cancel.html"
+            successPageUrl: "https://mryoungfargo.github.io/Mryoungfargo/success.html",
+            failurePageUrl: "https://mryoungfargo.github.io/Mryoungfargo/failed.html",
+            cancelUrl: "https://mryoungfargo.github.io/Mryoungfargo/cancel.html"
         }
     };
     
@@ -105,20 +105,17 @@ app.post('/forgot-password', async (req, res) => {
         return res.json({ success: false, error: "Email service not configured" });
     }
     
-    // Generate a reset token (valid for 1 hour)
     const resetToken = crypto.randomBytes(32).toString('hex');
-    const resetExpires = Date.now() + 3600000; // 1 hour
+    const resetExpires = Date.now() + 3600000;
     
-    // Store reset token temporarily
     if (!global.resetTokens) global.resetTokens = {};
     global.resetTokens[email] = { token: resetToken, expires: resetExpires };
     
-    // CORRECTED URL for your repository
-    const resetLink = `https://mryoungfargo.github.io/MrYoungFargo/reset-password.html?token=${resetToken}&email=${encodeURIComponent(email)}`;
+    // CORRECTED URL FOR YOUR REPOSITORY - CASE SENSITIVE!
+    const resetLink = `https://mryoungfargo.github.io/Mryoungfargo/reset-password.html?token=${resetToken}&email=${encodeURIComponent(email)}`;
     
     console.log("🔗 Reset link generated:", resetLink);
     
-    // Send email via Brevo
     try {
         const response = await fetch('https://api.brevo.com/v3/smtp/email', {
             method: 'POST',
@@ -170,12 +167,10 @@ app.post('/reset-password', async (req, res) => {
         return res.json({ success: false, error: "Invalid or expired reset token" });
     }
     
-    // Token is valid - password will be updated on frontend
     delete global.resetTokens[email];
     res.json({ success: true, message: "Password can now be reset" });
 });
 
-// Webhook endpoint
 app.post('/webhook', (req, res) => {
     console.log("💰 Webhook received:", req.body);
     res.status(200).send("OK");
