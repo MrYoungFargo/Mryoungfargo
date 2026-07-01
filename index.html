@@ -847,9 +847,9 @@
   <div class="mixtape-section">
     <img src="duetscover.png" alt="New Mixtape" class="mixtape-cover" onerror="this.src='https://placehold.co/140x140?text=Mixtape'">
     <div class="mixtape-title">DUETS · NEW MIXTAPE</div>
-    <div class="mixtape-price">Digital Album (ZIP) — R19.99</div>
+    <div class="mixtape-price">Digital Album (ZIP) — R20.00</div>
     <div class="mixtape-buttons" id="mixtapeButtons">
-      <button class="buy-btn" id="addToCartMixtapeBtn"><i class="fas fa-cart-plus"></i> ADD TO CART (R19.99)</button>
+      <button class="buy-btn" id="addToCartMixtapeBtn"><i class="fas fa-cart-plus"></i> ADD TO CART (R20.00)</button>
       <a href="#" id="mixtapeListenBtn" class="listen-btn-mix"><i class="fab fa-youtube"></i> LISTEN NOW</a>
     </div>
     <div id="mixtapeDownloadArea"></div>
@@ -1085,7 +1085,7 @@
       }
     } else {
       buttonsContainer.innerHTML = `
-        <button class="buy-btn" id="addToCartMixtapeBtn"><i class="fas fa-cart-plus"></i> ADD TO CART (R19.99)</button>
+        <button class="buy-btn" id="addToCartMixtapeBtn"><i class="fas fa-cart-plus"></i> ADD TO CART (R20.00)</button>
         <a href="#" id="mixtapeListenBtn" class="listen-btn-mix"><i class="fab fa-youtube"></i> LISTEN NOW</a>
       `;
       const addBtn = document.getElementById('addToCartMixtapeBtn');
@@ -1093,7 +1093,7 @@
         addBtn.addEventListener('click', () => {
           const existing = cart.find(i => i.id === 99);
           if (existing) existing.qty++;
-          else cart.push({ id: 99, name: "DUETS Mixtape (Digital ZIP)", price: 19.99, size: "Digital", color: "N/A", qty: 1 });
+          else cart.push({ id: 99, name: "DUETS Mixtape (Digital ZIP)", price: 20.00, size: "Digital", color: "N/A", qty: 1 });
           saveCartToLocal();
           document.getElementById("cartSidebar").classList.add("open");
         });
@@ -1102,7 +1102,7 @@
       if (listenBtn) {
         listenBtn.addEventListener('click', (e) => {
           e.preventDefault();
-          alert("Add the mixtape to cart (R19.99) to purchase and download the full ZIP file.\n\nYou can listen to previews on YouTube via the bottom button.");
+          alert("Add the mixtape to cart (R20.00) to purchase and download the full ZIP file.\n\nYou can listen to previews on YouTube via the bottom button.");
         });
       }
     }
