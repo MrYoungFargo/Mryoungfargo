@@ -1012,7 +1012,7 @@
 
 <script>
   // ==============================================================
-  // BACKEND API URL
+  // BACKEND API URL - CHANGE THIS TO YOUR ACTUAL BACKEND URL
   // ==============================================================
   const API_URL = 'https://mryoungfargo-payment.onrender.com';
   
@@ -1044,8 +1044,19 @@
   }
   
   document.getElementById('closeMusicModalBtn')?.addEventListener('click', closeMusicModal);
-  document.getElementById('listenNowBtn')?.addEventListener('click', openMusicModal);
-  document.getElementById('listenToMusicBtn')?.addEventListener('click', openMusicModal);
+  
+  // Listen for both "Listen Now" buttons (there can be multiple)
+  document.addEventListener('click', function(e) {
+    if (e.target.id === 'listenNowBtn' || e.target.closest('#listenNowBtn')) {
+      openMusicModal();
+    }
+    if (e.target.id === 'listenToMusicBtn' || e.target.closest('#listenToMusicBtn')) {
+      openMusicModal();
+    }
+    if (e.target.id === 'listenNowBtn2' || e.target.closest('#listenNowBtn2')) {
+      openMusicModal();
+    }
+  });
   
   // Close modal when clicking outside
   document.getElementById('musicModal')?.addEventListener('click', function(e) {
@@ -1090,10 +1101,18 @@
   
   async function apiCall(endpoint, data) {
     try {
-      const response = await fetch(`${API_URL}${endpoint}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const response = await fetch(`${API_URL}${endpoint}`, { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify(data) 
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       return await response.json();
     } catch (error) {
-      return { success: false, error: 'Connection error' };
+      console.error('API call error:', error);
+      return { success: false, error: error.message || 'Connection failed' };
     }
   }
   
@@ -1104,6 +1123,11 @@
         currentUser = result.user;
         updateMixtapeButtons();
         updateUserUI();
+        // Sync cart from server
+        if (result.user.cart && result.user.cart.length > 0) {
+          cart = result.user.cart;
+          updateCartUI();
+        }
       }
     }
   }
@@ -1217,36 +1241,29 @@
       if (downloadBtn) {
         downloadBtn.addEventListener('click', () => window.location.href = 'duets.zip');
       }
-      const listenBtn = document.getElementById('listenNowBtn2');
-      if (listenBtn) {
-        listenBtn.addEventListener('click', openMusicModal);
-      }
     } else {
       buttonsContainer.innerHTML = `
         <button class="buy-btn" id="addToCartMixtapeBtn"><i class="fas fa-cart-plus"></i> ADD TO CART (R20.00)</button>
         <button class="listen-btn-mix" id="listenNowBtn"><i class="fab fa-youtube"></i> LISTEN NOW</button>
       `;
-      const addBtn = document.getElementById('addToCartMixtapeBtn');
-      if (addBtn) {
-        addBtn.addEventListener('click', function() {
-          // Check if mixtape already exists in cart
-          const existing = cart.find(i => i.id === 99);
-          if (existing) {
-            alert("Mixtape is already in your cart. You can only purchase it once.");
-            return;
-          }
-          cart.push({ id: 99, name: "DUETS Mixtape (Digital ZIP)", price: 20.00, size: "Digital", color: "N/A", qty: 1 });
-          saveCartToLocal();
-          document.getElementById("cartSidebar").classList.add("open");
-          alert("DUETS Mixtape added to cart! Complete checkout to get your download link.");
-        });
-      }
-      const listenBtn = document.getElementById('listenNowBtn');
-      if (listenBtn) {
-        listenBtn.addEventListener('click', openMusicModal);
-      }
     }
   }
+  
+  // Listen for mixtape add to cart button clicks
+  document.addEventListener('click', function(e) {
+    const target = e.target;
+    if (target.id === 'addToCartMixtapeBtn' || target.closest('#addToCartMixtapeBtn')) {
+      const existing = cart.find(i => i.id === 99);
+      if (existing) {
+        alert("Mixtape is already in your cart. You can only purchase it once.");
+        return;
+      }
+      cart.push({ id: 99, name: "DUETS Mixtape (Digital ZIP)", price: 20.00, size: "Digital", color: "N/A", qty: 1 });
+      saveCartToLocal();
+      document.getElementById("cartSidebar").classList.add("open");
+      alert("DUETS Mixtape added to cart! Complete checkout to get your download link.");
+    }
+  });
   
   const togglePasswordBtn = document.getElementById('togglePasswordBtn');
   const passwordInput = document.getElementById('authPassword');
@@ -1487,13 +1504,11 @@
   let selectedDelivery = null;
   
   function showDeliveryModal() {
-    const modal = document.getElementById('deliveryModal');
-    modal.classList.add('show');
+    document.getElementById('deliveryModal').classList.add('show');
   }
   
   function hideDeliveryModal() {
-    const modal = document.getElementById('deliveryModal');
-    modal.classList.remove('show');
+    document.getElementById('deliveryModal').classList.remove('show');
   }
   
   document.getElementById('economyOption')?.addEventListener('click', () => {
