@@ -343,6 +343,89 @@
 
     footer { text-align: center; padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 15px; font-size: 0.45rem; color: rgba(255,255,255,0.6); }
 
+    /* MUSIC POPUP MODAL */
+    .music-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+    }
+    .music-modal.show { display: flex; }
+    .music-modal-content {
+      background: white;
+      border-radius: 24px;
+      padding: 30px 24px;
+      text-align: center;
+      max-width: 360px;
+      width: 90%;
+      color: #1e2a3e;
+    }
+    .music-modal-content h2 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+      color: #1a1a2e;
+    }
+    .music-modal-content p {
+      color: #666;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+    .music-modal-content .music-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .music-modal-content .music-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      color: white;
+      transition: all 0.2s;
+    }
+    .music-modal-content .music-links a:hover {
+      transform: translateY(-2px);
+    }
+    .music-modal-content .music-links .soundcloud-btn {
+      background: #ff5500;
+    }
+    .music-modal-content .music-links .soundcloud-btn:hover {
+      background: #e64a00;
+    }
+    .music-modal-content .music-links .youtube-btn {
+      background: #ff0000;
+    }
+    .music-modal-content .music-links .youtube-btn:hover {
+      background: #cc0000;
+    }
+    .music-modal-close {
+      background: #e11d2c;
+      border: none;
+      color: white;
+      padding: 10px;
+      width: 100%;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: all 0.2s;
+    }
+    .music-modal-close:hover {
+      background: #b71c1c;
+    }
+
     .music-footer-btn {
       text-align: center;
       margin: 30px 0 20px;
@@ -740,6 +823,24 @@
 </head>
 <body>
 
+<!-- MUSIC POPUP MODAL -->
+<div id="musicModal" class="music-modal">
+  <div class="music-modal-content">
+    <i class="fas fa-music" style="font-size: 48px; color: #ff0000; margin-bottom: 12px;"></i>
+    <h2>🎵 Listen to MrYoungFargo</h2>
+    <p>Choose your platform to listen</p>
+    <div class="music-links">
+      <a href="https://on.soundcloud.com/53o9jxK8tRKbMhUwt5" target="_blank" class="soundcloud-btn">
+        <i class="fab fa-soundcloud"></i> SoundCloud
+      </a>
+      <a href="https://youtube.com/@mryoungfargo_sa?si=kRJ8NeYk0SA9Po_W" target="_blank" class="youtube-btn">
+        <i class="fab fa-youtube"></i> YouTube
+      </a>
+    </div>
+    <button class="music-modal-close" id="closeMusicModalBtn">Close</button>
+  </div>
+</div>
+
 <!-- NOTIFICATION MODAL: FREE COLLECTION -->
 <div id="freeCollectionNotif" class="notification-modal">
   <div class="notification-content">
@@ -850,7 +951,7 @@
     <div class="mixtape-price">Digital Album (ZIP) — R20.00</div>
     <div class="mixtape-buttons" id="mixtapeButtons">
       <button class="buy-btn" id="addToCartMixtapeBtn"><i class="fas fa-cart-plus"></i> ADD TO CART (R20.00)</button>
-      <a href="#" id="mixtapeListenBtn" class="listen-btn-mix"><i class="fab fa-youtube"></i> LISTEN NOW</a>
+      <button class="listen-btn-mix" id="listenNowBtn"><i class="fab fa-youtube"></i> LISTEN NOW</button>
     </div>
     <div id="mixtapeDownloadArea"></div>
   </div>
@@ -862,14 +963,11 @@
   <div id="hoodies-section"><div class="category-title"><i class="fas fa-hoodie"></i> HOODIES</div><div class="products-grid" id="hoodiesGrid"></div></div>
 </div>
 
-<!-- MUSIC BUTTON AT BOTTOM - UPDATED WITH YOUR LINKS -->
+<!-- MUSIC BUTTON AT BOTTOM -->
 <div class="music-footer-btn">
-  <a href="https://on.soundcloud.com/53o9jxK8tRKbMhUwt5" target="_blank" class="listen-btn">
-    <i class="fab fa-soundcloud"></i> LISTEN ON SOUNDCLOUD
-  </a>
-  <a href="https://youtube.com/@mryoungfargo_sa?si=kRJ8NeYk0SA9Po_W" target="_blank" class="listen-btn" style="margin-top: 10px;">
-    <i class="fab fa-youtube"></i> LISTEN ON YOUTUBE
-  </a>
+  <button class="listen-btn" id="listenToMusicBtn">
+    <i class="fab fa-youtube"></i> LISTEN TO MY MUSIC
+  </button>
 </div>
 
 <footer><p>© 2025 MrYoungFargo — All Rights Reserved</p></footer>
@@ -933,6 +1031,28 @@
   let deliveryAmount = 0;
   let selectedPaxiStore = null;
   let isKingWilliamsTown = false;
+  
+  // ==============================================================
+  // MUSIC MODAL FUNCTIONS
+  // ==============================================================
+  function openMusicModal() {
+    document.getElementById('musicModal').classList.add('show');
+  }
+  
+  function closeMusicModal() {
+    document.getElementById('musicModal').classList.remove('show');
+  }
+  
+  document.getElementById('closeMusicModalBtn')?.addEventListener('click', closeMusicModal);
+  document.getElementById('listenNowBtn')?.addEventListener('click', openMusicModal);
+  document.getElementById('listenToMusicBtn')?.addEventListener('click', openMusicModal);
+  
+  // Close modal when clicking outside
+  document.getElementById('musicModal')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeMusicModal();
+    }
+  });
   
   function normalizeEmail(email) {
     return email ? email.toLowerCase().trim() : '';
@@ -1073,23 +1193,20 @@
     if (currentUser && currentUser.hasPurchasedMixtape === true) {
       buttonsContainer.innerHTML = `
         <button class="download-mixtape-btn" id="downloadMixtapeBtn"><i class="fas fa-download"></i> DOWNLOAD MIXTAPE (ZIP)</button>
-        <a href="#" id="mixtapeListenBtn2" class="listen-btn-mix"><i class="fab fa-youtube"></i> LISTEN NOW</a>
+        <button class="listen-btn-mix" id="listenNowBtn2"><i class="fab fa-youtube"></i> LISTEN NOW</button>
       `;
       const downloadBtn = document.getElementById('downloadMixtapeBtn');
       if (downloadBtn) {
         downloadBtn.addEventListener('click', () => window.location.href = 'duets.zip');
       }
-      const listenBtn = document.getElementById('mixtapeListenBtn2');
+      const listenBtn = document.getElementById('listenNowBtn2');
       if (listenBtn) {
-        listenBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          alert("You can listen to previews on YouTube via the bottom button.");
-        });
+        listenBtn.addEventListener('click', openMusicModal);
       }
     } else {
       buttonsContainer.innerHTML = `
         <button class="buy-btn" id="addToCartMixtapeBtn"><i class="fas fa-cart-plus"></i> ADD TO CART (R20.00)</button>
-        <a href="#" id="mixtapeListenBtn" class="listen-btn-mix"><i class="fab fa-youtube"></i> LISTEN NOW</a>
+        <button class="listen-btn-mix" id="listenNowBtn"><i class="fab fa-youtube"></i> LISTEN NOW</button>
       `;
       const addBtn = document.getElementById('addToCartMixtapeBtn');
       if (addBtn) {
@@ -1105,12 +1222,9 @@
           alert("DUETS Mixtape added to cart! Complete checkout to get your download link.");
         });
       }
-      const listenBtn = document.getElementById('mixtapeListenBtn');
+      const listenBtn = document.getElementById('listenNowBtn');
       if (listenBtn) {
-        listenBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          alert("Add the mixtape to cart (R20.00) to purchase and download the full ZIP file.\n\nYou can listen to previews on YouTube via the bottom button.");
-        });
+        listenBtn.addEventListener('click', openMusicModal);
       }
     }
   }
