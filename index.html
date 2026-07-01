@@ -862,10 +862,13 @@
   <div id="hoodies-section"><div class="category-title"><i class="fas fa-hoodie"></i> HOODIES</div><div class="products-grid" id="hoodiesGrid"></div></div>
 </div>
 
-<!-- MUSIC BUTTON AT BOTTOM -->
+<!-- MUSIC BUTTON AT BOTTOM - UPDATED WITH YOUR LINKS -->
 <div class="music-footer-btn">
-  <a href="https://m.youtube.com/@MrYoungFargo_SA" target="_blank" class="listen-btn">
-    <i class="fab fa-youtube"></i> LISTEN TO MY MUSIC
+  <a href="https://on.soundcloud.com/53o9jxK8tRKbMhUwt5" target="_blank" class="listen-btn">
+    <i class="fab fa-soundcloud"></i> LISTEN ON SOUNDCLOUD
+  </a>
+  <a href="https://youtube.com/@mryoungfargo_sa?si=kRJ8NeYk0SA9Po_W" target="_blank" class="listen-btn" style="margin-top: 10px;">
+    <i class="fab fa-youtube"></i> LISTEN ON YOUTUBE
   </a>
 </div>
 
@@ -1092,10 +1095,14 @@
       if (addBtn) {
         addBtn.addEventListener('click', () => {
           const existing = cart.find(i => i.id === 99);
-          if (existing) existing.qty++;
-          else cart.push({ id: 99, name: "DUETS Mixtape (Digital ZIP)", price: 20.00, size: "Digital", color: "N/A", qty: 1 });
+          if (existing) {
+            alert("Mixtape is already in your cart. You can only purchase it once.");
+            return;
+          }
+          cart.push({ id: 99, name: "DUETS Mixtape (Digital ZIP)", price: 20.00, size: "Digital", color: "N/A", qty: 1 });
           saveCartToLocal();
           document.getElementById("cartSidebar").classList.add("open");
+          alert("DUETS Mixtape added to cart! Complete checkout to get your download link.");
         });
       }
       const listenBtn = document.getElementById('mixtapeListenBtn');
