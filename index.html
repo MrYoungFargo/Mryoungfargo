@@ -846,7 +846,7 @@
   <div class="notification-content">
     <i class="fas fa-check-circle"></i>
     <h4>✅ FREE COLLECTION AT CLICKS STONE TOWERS, KING WILLIAM'S TOWN!</h4>
-    <p>You will receive an email when order is ready for collection.</p>
+    <p>You will receive an email when your order is ready for collection.</p>
     <button class="notification-close" id="closeFreeCollectionBtn">Continue to Payment</button>
   </div>
 </div>
@@ -1147,11 +1147,29 @@
       sessionToken = result.sessionToken;
       localStorage.setItem('session_token', sessionToken);
       
+      // Merge cart from server with local cart, prevent duplicate mixtape
       if (cart.length > 0 && result.user.cart) {
+        // Remove any mixtape from local cart if server already has it
+        const serverHasMixtape = result.user.cart.some(i => i.id === 99);
+        const localMixtapeIndex = cart.findIndex(i => i.id === 99);
+        
+        // If local has mixtape and server has mixtape, remove local mixtape
+        if (serverHasMixtape && localMixtapeIndex !== -1) {
+          cart.splice(localMixtapeIndex, 1);
+        }
+        
         for (let localItem of cart) {
           const existing = result.user.cart.find(i => i.id === localItem.id && i.size === localItem.size && i.color === localItem.color);
-          if (existing) existing.qty += localItem.qty;
-          else result.user.cart.push(localItem);
+          if (existing) {
+            // If it's mixtape, ensure quantity stays 1
+            if (localItem.id === 99) {
+              existing.qty = 1;
+            } else {
+              existing.qty += localItem.qty;
+            }
+          } else {
+            result.user.cart.push(localItem);
+          }
         }
         cart = result.user.cart;
         await saveCartToServer();
@@ -1210,7 +1228,8 @@
       `;
       const addBtn = document.getElementById('addToCartMixtapeBtn');
       if (addBtn) {
-        addBtn.addEventListener('click', () => {
+        addBtn.addEventListener('click', function() {
+          // Check if mixtape already exists in cart
           const existing = cart.find(i => i.id === 99);
           if (existing) {
             alert("Mixtape is already in your cart. You can only purchase it once.");
