@@ -390,7 +390,7 @@ app.post('/forgot-password', async (req, res) => {
 
   const resetToken = crypto.randomBytes(32).toString('hex');
   global.resetTokens[email] = { token: resetToken, expires: Date.now() + 3600000 };
-  const resetLink = `https://mryoungfargo.com/?token=${resetToken}&email=${encodeURIComponent(email)}`;
+  const resetLink = `https://mryoungfargo.github.io/Mryoungfargo/?token=${resetToken}&email=${encodeURIComponent(email)}`;
 
   try {
     const response = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -412,13 +412,45 @@ app.post('/forgot-password', async (req, res) => {
   }
 });
 
-app.post('/reset-password', (req, res) => {
+// ==============================================================
+// RESET PASSWORD (FIXED)
+// ==============================================================
+app.post('/reset-password', async (req, res) => {
   const { email, token, newPassword } = req.body;
-  if (!global.resetTokens[email] || global.resetTokens[email].token !== token || global.resetTokens[email].expires < Date.now()) {
+  
+  if (!email || !token || !newPassword) {
+    return res.json({ success: false, error: 'Email, token, and new password are required' });
+  }
+  
+  if (!global.resetTokens[email] || 
+      global.resetTokens[email].token !== token || 
+      global.resetTokens[email].expires < Date.now()) {
     return res.json({ success: false, error: 'Invalid or expired reset token' });
   }
-  delete global.resetTokens[email];
-  res.json({ success: true, message: 'Password can now be reset' });
+  
+  try {
+    const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+    if (listError) throw listError;
+    
+    const user = users.find(u => u.email === email);
+    if (!user) {
+      return res.json({ success: false, error: 'User not found' });
+    }
+    
+    const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+      user.id,
+      { password: newPassword }
+    );
+    
+    if (updateError) throw updateError;
+    
+    delete global.resetTokens[email];
+    
+    res.json({ success: true, message: 'Password has been reset successfully' });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    res.json({ success: false, error: error.message || 'Failed to reset password' });
+  }
 });
 
 // ==============================================================
