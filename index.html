@@ -951,7 +951,7 @@
     <div class="mixtape-price">Digital Album (ZIP) — R20.00</div>
     <div class="mixtape-buttons" id="mixtapeButtons">
       <button class="buy-btn" id="addToCartMixtapeBtn"><i class="fas fa-cart-plus"></i> ADD TO CART (R20.00)</button>
-      <button class="listen-btn-mix" id="listenNowBtn"><i class="fab fa-youtube"></i> LISTEN NOW</button>
+      <!-- "LISTEN NOW" button removed -->
     </div>
     <div id="mixtapeDownloadArea"></div>
   </div>
@@ -963,7 +963,7 @@
   <div id="hoodies-section"><div class="category-title"><i class="fas fa-hoodie"></i> HOODIES</div><div class="products-grid" id="hoodiesGrid"></div></div>
 </div>
 
-<!-- MUSIC BUTTON AT BOTTOM -->
+<!-- MUSIC BUTTON AT BOTTOM (KEPT) -->
 <div class="music-footer-btn">
   <button class="listen-btn" id="listenToMusicBtn">
     <i class="fab fa-youtube"></i> LISTEN TO MY MUSIC
@@ -1045,15 +1045,9 @@
   
   document.getElementById('closeMusicModalBtn')?.addEventListener('click', closeMusicModal);
   
-  // Listen for both "Listen Now" buttons (there can be multiple)
+  // Listen for bottom "Listen to My Music" button only
   document.addEventListener('click', function(e) {
-    if (e.target.id === 'listenNowBtn' || e.target.closest('#listenNowBtn')) {
-      openMusicModal();
-    }
     if (e.target.id === 'listenToMusicBtn' || e.target.closest('#listenToMusicBtn')) {
-      openMusicModal();
-    }
-    if (e.target.id === 'listenNowBtn2' || e.target.closest('#listenNowBtn2')) {
       openMusicModal();
     }
   });
@@ -1235,7 +1229,6 @@
     if (currentUser && currentUser.hasPurchasedMixtape === true) {
       buttonsContainer.innerHTML = `
         <button class="download-mixtape-btn" id="downloadMixtapeBtn"><i class="fas fa-download"></i> DOWNLOAD MIXTAPE (ZIP)</button>
-        <button class="listen-btn-mix" id="listenNowBtn2"><i class="fab fa-youtube"></i> LISTEN NOW</button>
       `;
       const downloadBtn = document.getElementById('downloadMixtapeBtn');
       if (downloadBtn) {
@@ -1244,7 +1237,6 @@
     } else {
       buttonsContainer.innerHTML = `
         <button class="buy-btn" id="addToCartMixtapeBtn"><i class="fas fa-cart-plus"></i> ADD TO CART (R20.00)</button>
-        <button class="listen-btn-mix" id="listenNowBtn"><i class="fab fa-youtube"></i> LISTEN NOW</button>
       `;
     }
   }
@@ -1814,43 +1806,31 @@
     }
   }
   
-  document.getElementById("cartIcon")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.add("open"));
-  document.getElementById("stickyCartIcon")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.add("open"));
-  document.getElementById("closeCartBtn")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.remove("open"));
-  document.getElementById("modalConfirmBtn")?.addEventListener("click", confirmAdd);
-  document.getElementById("modalCloseBtn")?.addEventListener("click", closeModal);
-  window.addEventListener("click", (e) => { if (e.target === document.getElementById("sizeColorModal")) closeModal(); });
-  
-  document.getElementById("closeAuthBtn")?.addEventListener("click", window.closeAuthModal);
-  document.getElementById("closeResetBtn")?.addEventListener("click", closeResetModal);
-  document.getElementById("authSubmitBtn")?.addEventListener("click", handleAuth);
-  document.getElementById("authToggleText")?.addEventListener("click", toggleAuthMode);
-  document.getElementById("forgotPasswordBtn")?.addEventListener("click", showResetModal);
-  document.getElementById("sendResetBtn")?.addEventListener("click", sendResetLink);
-  
-  // Make the main checkout button use the new function
-  document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
-    if (!currentUser) {
-      window.showAuthModal();
-      return;
+  // ==============================================================
+  // CHECK PAYMENT STATUS FROM URL PARAMS (for redirect after iKhokha)
+  // ==============================================================
+  function checkPaymentStatus() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const payment = urlParams.get('payment');
+    
+    if (payment === 'success') {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      refreshUserData().then(() => {
+        updateMixtapeButtons();
+        alert('✅ Payment successful! Your mixtape is now available for download.');
+      });
+    } else if (payment === 'failed') {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      alert('❌ Payment failed. Please try again.');
+    } else if (payment === 'cancel') {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      alert('Payment was cancelled.');
     }
-    if (cart.length === 0) {
-      alert("Cart is empty");
-      return;
-    }
-    const hasPhysicalItems = cart.some(item => item.id !== 99);
-    if (hasPhysicalItems && !selectedPaxiStore && !isKingWilliamsTown) {
-      openStoreFinder();
-      return;
-    }
-    await proceedToPayment();
-  });
+  }
   
   // ==============================================================
-  // PASSWORD RESET FORM HANDLER (ADDED)
+  // PASSWORD RESET FORM HANDLER
   // ==============================================================
-
-  // Check if URL contains reset token (when user clicks email link)
   function checkForResetToken() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -1862,7 +1842,6 @@
   }
 
   function showResetPasswordForm(token, email) {
-    // Create modal overlay if it doesn't exist
     let resetFormModal = document.getElementById('resetFormModal');
     if (!resetFormModal) {
       resetFormModal = document.createElement('div');
@@ -1885,13 +1864,11 @@
       `;
       document.body.appendChild(resetFormModal);
       
-      // Close button
       document.getElementById('closeResetFormBtn').addEventListener('click', () => {
         resetFormModal.style.display = 'none';
         window.history.replaceState({}, document.title, window.location.pathname);
       });
       
-      // Submit button
       document.getElementById('resetPasswordSubmitBtn').addEventListener('click', async () => {
         const newPass = document.getElementById('newPasswordInput').value.trim();
         const confirmPass = document.getElementById('confirmPasswordInput').value.trim();
@@ -1939,8 +1916,45 @@
     }
   }
 
-  // Call on page load
-  document.addEventListener('DOMContentLoaded', checkForResetToken);
+  // ==============================================================
+  // EVENT LISTENERS & INIT
+  // ==============================================================
+  document.getElementById("cartIcon")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.add("open"));
+  document.getElementById("stickyCartIcon")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.add("open"));
+  document.getElementById("closeCartBtn")?.addEventListener("click", () => document.getElementById("cartSidebar").classList.remove("open"));
+  document.getElementById("modalConfirmBtn")?.addEventListener("click", confirmAdd);
+  document.getElementById("modalCloseBtn")?.addEventListener("click", closeModal);
+  window.addEventListener("click", (e) => { if (e.target === document.getElementById("sizeColorModal")) closeModal(); });
+  
+  document.getElementById("closeAuthBtn")?.addEventListener("click", window.closeAuthModal);
+  document.getElementById("closeResetBtn")?.addEventListener("click", closeResetModal);
+  document.getElementById("authSubmitBtn")?.addEventListener("click", handleAuth);
+  document.getElementById("authToggleText")?.addEventListener("click", toggleAuthMode);
+  document.getElementById("forgotPasswordBtn")?.addEventListener("click", showResetModal);
+  document.getElementById("sendResetBtn")?.addEventListener("click", sendResetLink);
+  
+  document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
+    if (!currentUser) {
+      window.showAuthModal();
+      return;
+    }
+    if (cart.length === 0) {
+      alert("Cart is empty");
+      return;
+    }
+    const hasPhysicalItems = cart.some(item => item.id !== 99);
+    if (hasPhysicalItems && !selectedPaxiStore && !isKingWilliamsTown) {
+      openStoreFinder();
+      return;
+    }
+    await proceedToPayment();
+  });
+  
+  // Run on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    checkForResetToken();
+    checkPaymentStatus();
+  });
   
   verifySession().then(() => {
     renderGrid(tshirts, "tshirtsGrid");
