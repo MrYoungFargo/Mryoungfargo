@@ -888,7 +888,7 @@
   </div>
 </div>
 
-<!-- RESET PASSWORD MODAL -->
+<!-- RESET PASSWORD MODAL (original) -->
 <div id="resetModal" class="reset-modal">
   <div class="reset-modal-content">
     <button class="close-reset" id="closeResetBtn">&times;</button>
@@ -1845,6 +1845,102 @@
     }
     await proceedToPayment();
   });
+  
+  // ==============================================================
+  // PASSWORD RESET FORM HANDLER (ADDED)
+  // ==============================================================
+
+  // Check if URL contains reset token (when user clicks email link)
+  function checkForResetToken() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const email = urlParams.get('email');
+    
+    if (token && email) {
+      showResetPasswordForm(token, email);
+    }
+  }
+
+  function showResetPasswordForm(token, email) {
+    // Create modal overlay if it doesn't exist
+    let resetFormModal = document.getElementById('resetFormModal');
+    if (!resetFormModal) {
+      resetFormModal = document.createElement('div');
+      resetFormModal.id = 'resetFormModal';
+      resetFormModal.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.9); z-index: 99999;
+        display: flex; align-items: center; justify-content: center;
+      `;
+      resetFormModal.innerHTML = `
+        <div style="background: white; border-radius: 24px; padding: 30px; max-width: 400px; width: 90%; text-align: center; color: #1a1a2e;">
+          <h2 style="margin-bottom: 8px;">🔑 Reset Your Password</h2>
+          <p style="color: #666; margin-bottom: 20px;">Enter your new password below</p>
+          <input type="password" id="newPasswordInput" placeholder="New password" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; font-size: 1rem;">
+          <input type="password" id="confirmPasswordInput" placeholder="Confirm new password" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 20px; font-size: 1rem;">
+          <button id="resetPasswordSubmitBtn" style="background: #3b82f6; color: white; border: none; padding: 12px; width: 100%; border-radius: 40px; font-weight: 600; font-size: 1rem; cursor: pointer;">Reset Password</button>
+          <button id="closeResetFormBtn" style="background: none; border: none; color: #999; margin-top: 12px; cursor: pointer;">Cancel</button>
+          <div id="resetFormMessage" style="margin-top: 12px; font-size: 0.9rem;"></div>
+        </div>
+      `;
+      document.body.appendChild(resetFormModal);
+      
+      // Close button
+      document.getElementById('closeResetFormBtn').addEventListener('click', () => {
+        resetFormModal.style.display = 'none';
+        window.history.replaceState({}, document.title, window.location.pathname);
+      });
+      
+      // Submit button
+      document.getElementById('resetPasswordSubmitBtn').addEventListener('click', async () => {
+        const newPass = document.getElementById('newPasswordInput').value.trim();
+        const confirmPass = document.getElementById('confirmPasswordInput').value.trim();
+        const msgDiv = document.getElementById('resetFormMessage');
+        
+        if (!newPass || !confirmPass) {
+          msgDiv.innerHTML = '<span style="color: #e11d2c;">Please fill in both fields</span>';
+          return;
+        }
+        if (newPass.length < 6) {
+          msgDiv.innerHTML = '<span style="color: #e11d2c;">Password must be at least 6 characters</span>';
+          return;
+        }
+        if (newPass !== confirmPass) {
+          msgDiv.innerHTML = '<span style="color: #e11d2c;">Passwords do not match</span>';
+          return;
+        }
+        
+        msgDiv.innerHTML = '<span style="color: #666;">Updating password...</span>';
+        
+        try {
+          const response = await fetch(`${API_URL}/reset-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, token, newPassword: newPass })
+          });
+          const data = await response.json();
+          
+          if (data.success) {
+            msgDiv.innerHTML = '<span style="color: #10b981;">✅ Password reset successfully! You can now log in.</span>';
+            setTimeout(() => {
+              resetFormModal.style.display = 'none';
+              window.history.replaceState({}, document.title, window.location.pathname);
+              window.showAuthModal();
+            }, 3000);
+          } else {
+            msgDiv.innerHTML = `<span style="color: #e11d2c;">❌ ${data.error || 'Reset failed'}</span>`;
+          }
+        } catch (error) {
+          msgDiv.innerHTML = '<span style="color: #e11d2c;">❌ Connection error. Please try again.</span>';
+        }
+      });
+    } else {
+      resetFormModal.style.display = 'flex';
+    }
+  }
+
+  // Call on page load
+  document.addEventListener('DOMContentLoaded', checkForResetToken);
   
   verifySession().then(() => {
     renderGrid(tshirts, "tshirtsGrid");
