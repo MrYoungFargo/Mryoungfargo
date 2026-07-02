@@ -15,6 +15,7 @@ const IKHOKHA_SECRET = process.env.IKHOKHA_SECRET;
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY; // Needed for auth
 
 const ADMIN_EMAIL = 'mryoungfargo@gmail.com';
 
@@ -22,11 +23,16 @@ console.log('Brevo API Key present:', BREVO_API_KEY ? 'YES' : 'NO');
 console.log('Admin email:', ADMIN_EMAIL);
 
 // ==============================================================
-// SUPABASE ADMIN CLIENT
+// SUPABASE ADMIN CLIENT (for admin operations)
 // ==============================================================
 const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
   auth: { autoRefreshToken: false, persistSession: false }
 });
+
+// ==============================================================
+// SUPABASE PUBLIC CLIENT (for password validation)
+// ==============================================================
+const supabasePublic = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // In-memory session storage
 global.sessions = new Map();
@@ -215,6 +221,9 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+// ==============================================================
+// FIXED LOGIN - Now validates password using Supabase Auth
+// ==============================================================
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -222,14 +231,19 @@ app.post('/api/login', async (req, res) => {
   }
 
   try {
-    const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers();
-    if (listError) throw listError;
+    // Use Supabase Auth to sign in with password
+    const { data, error } = await supabasePublic.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
 
-    const user = users.find(u => u.email === email);
-    if (!user) {
+    if (error) {
+      // Invalid credentials
       return res.json({ success: false, error: 'Invalid email or password' });
     }
 
+    // If we get here, credentials are valid
+    const user = data.user;
     const sessionToken = crypto.randomBytes(32).toString('hex');
     global.sessions.set(sessionToken, { userId: user.id, email: user.email });
 
