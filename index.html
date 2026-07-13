@@ -1232,7 +1232,8 @@
       `;
       const downloadBtn = document.getElementById('downloadMixtapeBtn');
       if (downloadBtn) {
-        downloadBtn.addEventListener('click', () => window.location.href = 'duets.zip');
+        // FIXED: correct filename is DUETS_MIXTAPE.zip
+        downloadBtn.addEventListener('click', () => window.location.href = 'DUETS_MIXTAPE.zip');
       }
     } else {
       buttonsContainer.innerHTML = `
